@@ -2,20 +2,20 @@
 
 import * as React from "react"
 import {
-  BarChart3,
-  Camera,
+  Book,
+  BookOpen,
   CircleHelp,
-  Database,
-  FileBarChart,
+  Component,
+  FileCode2,
   FileText,
-  Folder,
-  LayoutDashboard,
-  List,
-  MessageCircle,
+  Globe,
+  LayoutGrid,
+  Palette,
   Search,
   Settings,
-  Sparkles,
-  Users,
+  Settings2,
+  ToggleLeft,
+  Wand2,
 } from "lucide-react"
 import Image from "next/image"
 
@@ -40,187 +40,96 @@ const data = {
     email: "matt@glueiq.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  navMain: [
+  gettingStarted: [
     {
-      title: "Dashboards",
+      name: "Overview",
       url: "#",
-      icon: LayoutDashboard,
-      items: [
-        {
-          title: "My Day",
-          url: "#",
-        },
-        {
-          title: "My Assignments",
-          url: "#",
-        },
-        {
-          title: "My Contributions",
-          url: "#",
-        },
-        {
-          title: "Leaderboards",
-          url: "#",
-        },
-      ],
+      icon: BookOpen,
     },
     {
-      title: "Clients",
+      name: "Instructions",
       url: "#",
-      icon: Users,
-      items: [
-        {
-          title: "Client Goals",
-          url: "#",
-        },
-        {
-          title: "Performance",
-          url: "#",
-        },
-      ],
+      icon: FileText,
     },
     {
-      title: "Tools",
+      name: "Configuration",
       url: "#",
-      icon: Sparkles,
-      items: [
-        {
-          title: "Claude Skills",
-          url: "#",
-        },
-        {
-          title: "Studio FX",
-          url: "#",
-        },
-        {
-          title: "Workflows",
-          url: "#",
-        },
-        {
-          title: "Maker Tools",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: BarChart3,
-      items: [
-        {
-          title: "Individual",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Client",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Active Work",
-      url: "#",
-      icon: List,
-      items: [
-        {
-          title: "All Work",
-          url: "#",
-        },
-        {
-          title: "Retainers",
-          url: "#",
-        },
-        {
-          title: "Projects",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Domain Hubs",
-      url: "#",
-      icon: Folder,
-      items: [
-        {
-          title: "Client Delivery",
-          url: "#",
-        },
-        {
-          title: "Strategy",
-          url: "#",
-        },
-        {
-          title: "Creative",
-          url: "#",
-        },
-        {
-          title: "Media & Performance",
-          url: "#",
-        },
-        {
-          title: "Data & Analytics",
-          url: "#",
-        },
-        {
-          title: "Technology & AI",
-          url: "#",
-        },
-        {
-          title: "Operations",
-          url: "#",
-        },
-      ],
+      icon: Settings2,
     },
   ],
-  navClouds: [
+  tools: [
     {
-      title: "Capture",
-      icon: Camera,
-      isActive: true,
+      name: "Generator",
+      url: "/generator",
+      icon: Wand2,
+    },
+    {
+      name: "Storybook",
+      url: "http://localhost:6006",
+      icon: Book,
+    },
+    {
+      name: "Component States",
       url: "#",
+      icon: ToggleLeft,
+    },
+    {
+      name: "Example Site",
+      url: "#",
+      icon: Globe,
+    },
+  ],
+  uiKit: [
+    {
+      title: "Design Tokens",
+      url: "#",
+      icon: Palette,
       items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
+        { title: "Color", url: "#" },
+        { title: "Typography", url: "#" },
+        { title: "Spacing & Layout", url: "#" },
+        { title: "Shadows & Effects", url: "#" },
+        { title: "Motion", url: "#" },
       ],
     },
     {
-      title: "Proposal",
-      icon: FileText,
+      title: "Components",
       url: "#",
+      icon: Component,
       items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
+        { title: "Form Controls", url: "#" },
+        { title: "Buttons & Actions", url: "#" },
+        { title: "Navigation", url: "#" },
+        { title: "Feedback & Status", url: "#" },
+        { title: "Data Display", url: "#" },
+        { title: "Layout", url: "#" },
+        { title: "Typography", url: "#" },
+        { title: "Overlays & Modals", url: "#" },
       ],
     },
     {
-      title: "Prompts",
-      icon: Sparkles,
+      title: "Patterns (Blocks)",
       url: "#",
+      icon: LayoutGrid,
       items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
+        { title: "Authentication", url: "#" },
+        { title: "User Management", url: "#" },
+        { title: "Data Visualization", url: "#" },
+        { title: "Content Management", url: "#" },
+        { title: "Forms", url: "#" },
+        { title: "Empty & Error States", url: "#" },
+      ],
+    },
+    {
+      title: "Templates",
+      url: "#",
+      icon: FileCode2,
+      items: [
+        { title: "Landing", url: "#" },
+        { title: "Dashboard", url: "#" },
+        { title: "Settings & Admin", url: "#" },
+        { title: "Data & Lists", url: "#" },
+        { title: "Content Detail", url: "#" },
       ],
     },
   ],
@@ -239,28 +148,6 @@ const data = {
       title: "Search",
       url: "#",
       icon: Search,
-    },
-  ],
-  documents: [
-    {
-      name: "Ask GlueIQ",
-      url: "#",
-      icon: MessageCircle,
-    },
-    {
-      name: "Training Paths",
-      url: "#",
-      icon: List,
-    },
-    {
-      name: "Knowledge Base",
-      url: "#",
-      icon: Database,
-    },
-    {
-      name: "Industry Snapshots",
-      url: "#",
-      icon: FileBarChart,
     },
   ],
 }
@@ -292,8 +179,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
+        <NavDocuments items={data.gettingStarted} label="Getting Started" />
+        <NavDocuments items={data.tools} label="Tools" />
+        <NavMain items={data.uiKit} label="UI Kit" />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

@@ -1,0 +1,61 @@
+Follow the structure as 
+
+LABEL
+
+Folder
+    ├── Link
+    ├── Link
+    └── Link
+
+Here are the actual nav items
+
+
+
+GETTING STARTED
+
+Overview
+Instructions
+Configuration
+
+
+TOOLS
+
+Generator
+Storybook
+Component States
+Example Site
+
+
+UI Kit
+
+Design Tokens
+    ├── Color
+    ├── Typography
+    ├── Spacing & Layout
+    ├── Shadows & Effects
+    └── Motion (optional for V1.0)
+
+Components
+    ├── Form Controls
+    ├── Buttons & Actions
+    ├── Navigation
+    ├── Feedback & Status
+    ├── Data Display
+    ├── Layout
+    ├── Typography
+    └── Overlays & Modals
+
+Patterns (Blocks)
+    ├── Authentication
+    ├── User Management
+    ├── Data Visualization
+    ├── Content Management
+    ├── Forms
+    └── Empty & Error States
+
+Templates
+    ├── Authentication
+    ├── Dashboard
+    ├── Settings & Admin
+    ├── Data & Lists
+    └── Content Detail

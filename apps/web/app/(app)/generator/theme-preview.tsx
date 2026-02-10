@@ -18,6 +18,13 @@ import { Input } from "@repo/ui/components/ui/input"
 import { Label } from "@repo/ui/components/ui/label"
 import { Separator } from "@repo/ui/components/ui/separator"
 
+interface LogoSet {
+  icon: string | null
+  light: string | null
+  dark: string | null
+  favicon: string | null
+}
+
 interface ThemePreviewProps {
   palette: NeutralPaletteName
   brandColors: {
@@ -26,13 +33,20 @@ interface ThemePreviewProps {
     accent?: string
   }
   radius: string
+  logos: LogoSet
+}
+
+function svgToDataUri(svg: string): string {
+  return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`
 }
 
 export function ThemePreview({
   palette,
   brandColors,
   radius,
+  logos,
 }: ThemePreviewProps) {
+  const hasAnyLogo = logos.icon || logos.light || logos.dark || logos.favicon
   const cssVars = useMemo(() => {
     const pal = neutralPalettes[palette]
     const vars: Record<string, string> = {}
@@ -111,6 +125,67 @@ export function ThemePreview({
           <CardTitle>Live Preview</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
+          {/* Branding */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">Branding</p>
+            {hasAnyLogo ? (
+              <div className="space-y-3">
+                {/* Sidebar mockup */}
+                {(logos.icon || logos.dark) && (
+                  <div className="flex gap-2">
+                    {logos.icon && (
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border bg-sidebar">
+                        <img
+                          src={svgToDataUri(logos.icon)}
+                          alt="Icon"
+                          className="size-7 object-contain"
+                        />
+                      </div>
+                    )}
+                    {logos.dark && (
+                      <div className="flex h-12 flex-1 items-center rounded-lg border bg-sidebar px-3">
+                        <img
+                          src={svgToDataUri(logos.dark)}
+                          alt="Logo (dark)"
+                          className="max-h-7 max-w-full object-contain"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+                {/* Light logo on dark background */}
+                {logos.light && (
+                  <div className="flex h-12 items-center rounded-lg border bg-foreground px-3">
+                    <img
+                      src={svgToDataUri(logos.light)}
+                      alt="Logo (light)"
+                      className="max-h-7 max-w-full object-contain"
+                    />
+                  </div>
+                )}
+                {/* Favicon browser tab mockup */}
+                {logos.favicon && (
+                  <div className="flex items-center gap-2 rounded-t-lg border bg-muted px-3 py-1.5">
+                    <img
+                      src={svgToDataUri(logos.favicon)}
+                      alt="Favicon"
+                      className="size-4 object-contain"
+                    />
+                    <span className="truncate text-xs text-muted-foreground">
+                      Browser Tab
+                    </span>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <p className="rounded-lg border border-dashed px-4 py-3 text-center text-xs text-muted-foreground">
+                No logos uploaded
+              </p>
+            )}
+          </div>
+
+          <Separator />
+
           {/* Buttons */}
           <div className="space-y-2">
             <p className="text-sm font-medium text-muted-foreground">Buttons</p>
