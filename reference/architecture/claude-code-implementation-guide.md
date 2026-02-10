@@ -152,9 +152,13 @@ claude-code team start
 I'm building a Client Software Generator for marketing software. 
 
 CONTEXT:
+Located in the `reference/` directory:
 - Read `ui-kit-generator-prd.md` for full product context
 - Read `claude/team-brief.md` for current phase goals
-- Read `component-library-strategy.md` for architecture decisions
+- Read `component-library-strategy.md` for initial approach and architecture decisions
+- Read 'PROJECT_OVERVIEW.md' for what was actually implmented to date
+- Read 'STORYBOOK-IMPLEMENTATION-GUIDE.md' for storybook implementation guide
+
 
 MISSION: Phase 1 - Project Review & Validation
 
