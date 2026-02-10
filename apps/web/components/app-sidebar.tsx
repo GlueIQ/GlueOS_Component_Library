@@ -2,22 +2,21 @@
 
 import * as React from "react"
 import {
-  IconCamera,
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
-  IconFolder,
-  IconHelp,
-  IconListDetails,
-  IconMessage,
-  IconReport,
-  IconSearch,
-  IconSettings,
-  IconUsers,
-} from "@tabler/icons-react"
+  BarChart3,
+  Camera,
+  CircleHelp,
+  Database,
+  FileBarChart,
+  FileText,
+  Folder,
+  LayoutDashboard,
+  List,
+  MessageCircle,
+  Search,
+  Settings,
+  Sparkles,
+  Users,
+} from "lucide-react"
 import Image from "next/image"
 
 import { GlueIQLogo } from "@/components/glueiq-logo"
@@ -45,7 +44,7 @@ const data = {
     {
       title: "Dashboards",
       url: "#",
-      icon: IconDashboard,
+      icon: LayoutDashboard,
       items: [
         {
           title: "My Day",
@@ -68,7 +67,7 @@ const data = {
     {
       title: "Clients",
       url: "#",
-      icon: IconUsers,
+      icon: Users,
       items: [
         {
           title: "Client Goals",
@@ -83,7 +82,7 @@ const data = {
     {
       title: "Tools",
       url: "#",
-      icon: IconFileAi,
+      icon: Sparkles,
       items: [
         {
           title: "Claude Skills",
@@ -106,7 +105,7 @@ const data = {
     {
       title: "Analytics",
       url: "#",
-      icon: IconChartBar,
+      icon: BarChart3,
       items: [
         {
           title: "Individual",
@@ -125,7 +124,7 @@ const data = {
     {
       title: "Active Work",
       url: "#",
-      icon: IconListDetails,
+      icon: List,
       items: [
         {
           title: "All Work",
@@ -144,7 +143,7 @@ const data = {
     {
       title: "Domain Hubs",
       url: "#",
-      icon: IconFolder,
+      icon: Folder,
       items: [
         {
           title: "Client Delivery",
@@ -180,7 +179,7 @@ const data = {
   navClouds: [
     {
       title: "Capture",
-      icon: IconCamera,
+      icon: Camera,
       isActive: true,
       url: "#",
       items: [
@@ -196,7 +195,7 @@ const data = {
     },
     {
       title: "Proposal",
-      icon: IconFileDescription,
+      icon: FileText,
       url: "#",
       items: [
         {
@@ -211,7 +210,7 @@ const data = {
     },
     {
       title: "Prompts",
-      icon: IconFileAi,
+      icon: Sparkles,
       url: "#",
       items: [
         {
@@ -229,39 +228,39 @@ const data = {
     {
       title: "Settings",
       url: "#",
-      icon: IconSettings,
+      icon: Settings,
     },
     {
       title: "Get Help",
       url: "#",
-      icon: IconHelp,
+      icon: CircleHelp,
     },
     {
       title: "Search",
       url: "#",
-      icon: IconSearch,
+      icon: Search,
     },
   ],
   documents: [
     {
       name: "Ask GlueIQ",
       url: "#",
-      icon: IconMessage,
+      icon: MessageCircle,
     },
     {
       name: "Training Paths",
       url: "#",
-      icon: IconListDetails,
+      icon: List,
     },
     {
       name: "Knowledge Base",
       url: "#",
-      icon: IconDatabase,
+      icon: Database,
     },
     {
       name: "Industry Snapshots",
       url: "#",
-      icon: IconReport,
+      icon: FileBarChart,
     },
   ],
 }
@@ -284,7 +283,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   height={24}
                   className="size-6 shrink-0"
                 />
-                <div className="truncate">
+                <div className="truncate group-data-[collapsible=icon]:hidden">
                   <GlueIQLogo />
                 </div>
               </a>

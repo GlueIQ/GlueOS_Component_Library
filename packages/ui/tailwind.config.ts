@@ -1,12 +1,13 @@
 import type { Config } from "tailwindcss"
-import { tailwindConfigBase } from "../../packages/ui/tailwind.config.base"
+import { tailwindConfigBase } from "./tailwind.config.base"
 
 const config: Config = {
   ...tailwindConfigBase,
   content: [
-    "./app/**/*.{ts,tsx}",
+    "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
-    "../../packages/ui/src/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
 } as Config
 
