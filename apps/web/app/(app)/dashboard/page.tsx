@@ -52,7 +52,7 @@ export default function DashboardPage() {
           </CardContent>
           <CardFooter>
             <Button variant="outline" asChild className="w-full">
-              <Link href="/storybook">View Components</Link>
+              <Link href="http://localhost:6006">View Components</Link>
             </Button>
           </CardFooter>
         </Card>
@@ -74,6 +74,32 @@ export default function DashboardPage() {
             </Button>
           </CardFooter>
         </Card>
+      </div>
+
+      <div className="mt-8 space-y-4">
+        <Text>
+          The GlueOS Design System is a comprehensive UI toolkit built for
+          creating consistent, branded client workspaces. It provides a
+          complete set of design tokens, components, patterns, and templates
+          that can be customized per client through the Generator tool. Every
+          project starts from the same foundation, ensuring visual consistency
+          and rapid delivery across all client engagements.
+        </Text>
+        <Text>
+          Components are built on top of Radix UI primitives and styled with
+          Tailwind CSS, following an OKLCh-based color system that produces
+          perceptually uniform palettes. The theming layer supports neutral
+          palette selection, brand color injection, and configurable border
+          radius — all managed through CSS custom properties so themes can be
+          swapped without rebuilding.
+        </Text>
+        <Text>
+          Each generated workspace is a Turborepo monorepo with shared UI
+          packages, pre-configured tooling, and a Next.js application shell
+          ready for client-specific development. Browse the sidebar to explore
+          design tokens, individual components, reusable patterns, and
+          full-page templates.
+        </Text>
       </div>
     </Container>
   )

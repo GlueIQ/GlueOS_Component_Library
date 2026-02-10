@@ -23,6 +23,7 @@ import {
 import { Slider } from "@repo/ui/components/ui/slider"
 import { Separator } from "@repo/ui/components/ui/separator"
 import { ColorInput } from "./color-input"
+import { LogoUpload } from "./logo-upload"
 import { PalettePicker } from "./palette-picker"
 import { ThemePreview } from "./theme-preview"
 
@@ -63,6 +64,10 @@ export function GeneratorForm() {
   const [headingFont, setHeadingFont] = useState("Geist")
   const [bodyFont, setBodyFont] = useState("Geist")
   const [radius, setRadius] = useState("0.625")
+  const [logoIcon, setLogoIcon] = useState<string | null>(null)
+  const [logoLight, setLogoLight] = useState<string | null>(null)
+  const [logoDark, setLogoDark] = useState<string | null>(null)
+  const [faviconSvg, setFaviconSvg] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
 
   const handleClientNameChange = useCallback(
@@ -98,6 +103,12 @@ export function GeneratorForm() {
         headingFont,
         bodyFont,
         radius,
+        logos: {
+          icon: logoIcon || undefined,
+          light: logoLight || undefined,
+          dark: logoDark || undefined,
+          favicon: faviconSvg || undefined,
+        },
       }
 
       const response = await fetch("/api/generate", {
@@ -139,6 +150,10 @@ export function GeneratorForm() {
     headingFont,
     bodyFont,
     radius,
+    logoIcon,
+    logoLight,
+    logoDark,
+    faviconSvg,
   ])
 
   return (
@@ -213,7 +228,46 @@ export function GeneratorForm() {
           </CardContent>
         </Card>
 
-        {/* Section 4: Typography */}
+        {/* Section 4: Logos & Branding */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Logos & Branding</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-6 sm:grid-cols-2">
+              <LogoUpload
+                label="Logo Icon"
+                description="A compact icon or symbol, ideally square. Used when the sidebar is collapsed."
+                value={logoIcon}
+                onChange={setLogoIcon}
+                id="logo-icon"
+              />
+              <LogoUpload
+                label="Logo (Light)"
+                description="Your full logo in light/white color. Displayed on dark backgrounds and dark mode."
+                value={logoLight}
+                onChange={setLogoLight}
+                id="logo-light"
+              />
+              <LogoUpload
+                label="Logo (Dark)"
+                description="Your full logo in dark color. Displayed on light backgrounds and light mode."
+                value={logoDark}
+                onChange={setLogoDark}
+                id="logo-dark"
+              />
+              <LogoUpload
+                label="Favicon"
+                description="A small square icon for the browser tab. Works best at 32×32 or 16×16."
+                value={faviconSvg}
+                onChange={setFaviconSvg}
+                id="favicon"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Section 5: Typography */}
         <Card>
           <CardHeader>
             <CardTitle>Typography</CardTitle>
@@ -310,6 +364,12 @@ export function GeneratorForm() {
             accent: accentColor || undefined,
           }}
           radius={radius}
+          logos={{
+            icon: logoIcon,
+            light: logoLight,
+            dark: logoDark,
+            favicon: faviconSvg,
+          }}
         />
       </div>
     </div>

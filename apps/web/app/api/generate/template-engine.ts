@@ -25,6 +25,12 @@ export interface GenerateConfig {
   headingFont: string
   bodyFont: string
   radius: string
+  logos?: {
+    icon?: string
+    light?: string
+    dark?: string
+    favicon?: string
+  }
 }
 
 /**
@@ -93,6 +99,35 @@ export async function generateProject(
         generateFontVariables(fontConfig),
       )
       fs.writeFileSync(layoutPath, layout)
+    }
+
+    // Write logo SVG files to the web app's public directory
+    if (config.logos) {
+      const publicDir = path.join(projectDir, "apps/web/public")
+      fs.mkdirSync(publicDir, { recursive: true })
+
+      const logoFiles: [string | undefined, string][] = [
+        [config.logos.icon, "logo-icon.svg"],
+        [config.logos.light, "logo-light.svg"],
+        [config.logos.dark, "logo-dark.svg"],
+        [config.logos.favicon, "favicon.svg"],
+      ]
+
+      for (const [content, filename] of logoFiles) {
+        if (content) {
+          fs.writeFileSync(path.join(publicDir, filename), content)
+        }
+      }
+
+      // Update layout.tsx metadata to reference the favicon if provided
+      if (config.logos.favicon && fs.existsSync(layoutPath)) {
+        let layout = fs.readFileSync(layoutPath, "utf-8")
+        layout = layout.replace(
+          'description: "Powered by GlueOS Design System",',
+          'description: "Powered by GlueOS Design System",\n  icons: { icon: "/favicon.svg" },',
+        )
+        fs.writeFileSync(layoutPath, layout)
+      }
     }
 
     // Package the project directory into a zip archive

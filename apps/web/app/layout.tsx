@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "GlueOS Design System",
   description: "Enterprise-grade UI components for marketing software",
+  icons: { icon: "/glueiq-favicon.svg" },
 };
 
 export default function RootLayout({

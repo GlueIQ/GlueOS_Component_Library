@@ -12,16 +12,18 @@ import {
 
 export function NavDocuments({
   items,
+  label,
 }: {
   items: {
     name: string
     url: string
     icon: LucideIcon
   }[]
+  label: string
 }) {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Knowledge</SidebarGroupLabel>
+      <SidebarGroupLabel>{label}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>

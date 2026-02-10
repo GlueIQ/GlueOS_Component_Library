@@ -20,6 +20,14 @@ const generateSchema = z.object({
   headingFont: z.string().min(1, "Heading font is required"),
   bodyFont: z.string().min(1, "Body font is required"),
   radius: z.string(),
+  logos: z
+    .object({
+      icon: z.string().optional(),
+      light: z.string().optional(),
+      dark: z.string().optional(),
+      favicon: z.string().optional(),
+    })
+    .optional(),
 })
 
 export async function POST(request: NextRequest) {
@@ -35,6 +43,7 @@ export async function POST(request: NextRequest) {
       headingFont: data.headingFont,
       bodyFont: data.bodyFont,
       radius: data.radius,
+      logos: data.logos,
     })
 
     return new NextResponse(new Uint8Array(zipBuffer), {
