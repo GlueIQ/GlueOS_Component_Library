@@ -2,78 +2,138 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   LAYER 1: NEUTRAL PALETTE — "neutral"
+   Generator swaps this section to change the neutral tone of the UI.
+   Options: slate | gray | zinc | neutral | stone
+   ========================================================================== */
 
+:root {
+  --color-neutral-50: oklch(0.985 0 0);
+  --color-neutral-100: oklch(0.97 0 0);
+  --color-neutral-200: oklch(0.922 0 0);
+  --color-neutral-300: oklch(0.87 0 0);
+  --color-neutral-400: oklch(0.708 0 0);
+  --color-neutral-500: oklch(0.556 0 0);
+  --color-neutral-600: oklch(0.439 0 0);
+  --color-neutral-700: oklch(0.371 0 0);
+  --color-neutral-800: oklch(0.269 0 0);
+  --color-neutral-900: oklch(0.205 0 0);
+  --color-neutral-950: oklch(0.145 0 0);
+}
 
+/* ==========================================================================
+   LAYER 2: BRAND COLORS
+   Generator injects user brand colors here (hex → OKLch).
+   When no brand colors are set, defaults reference the neutral palette.
+   ========================================================================== */
 
+:root {
+  --color-brand-primary: var(--color-neutral-900);
+  --color-brand-primary-foreground: var(--color-neutral-50);
+  --color-brand-secondary: var(--color-neutral-100);
+  --color-brand-secondary-foreground: var(--color-neutral-900);
+  --color-brand-accent: var(--color-neutral-100);
+  --color-brand-accent-foreground: var(--color-neutral-900);
+  --color-brand-destructive: oklch(0.577 0.245 27.325);
+  --color-brand-destructive-foreground: oklch(1 0 0);
+}
 
+.dark {
+  --color-brand-primary: var(--color-neutral-200);
+  --color-brand-primary-foreground: var(--color-neutral-900);
+  --color-brand-secondary: var(--color-neutral-800);
+  --color-brand-secondary-foreground: var(--color-neutral-50);
+  --color-brand-accent: var(--color-neutral-800);
+  --color-brand-accent-foreground: var(--color-neutral-50);
+  --color-brand-destructive: oklch(0.704 0.191 22.216);
+  --color-brand-destructive-foreground: var(--color-neutral-900);
+}
+
+/* ==========================================================================
+   LAYER 3: SEMANTIC MAPPINGS
+   Maps component tokens to Layer 1 (neutrals) and Layer 2 (brand).
+   Components use ONLY these variables — never reference Layer 1/2 directly.
+   ========================================================================== */
 
 :root {
   --radius: 0.625rem;
+
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: var(--color-neutral-950);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: var(--color-neutral-950);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --popover-foreground: var(--color-neutral-950);
+
+  --primary: var(--color-brand-primary);
+  --primary-foreground: var(--color-brand-primary-foreground);
+  --secondary: var(--color-brand-secondary);
+  --secondary-foreground: var(--color-brand-secondary-foreground);
+  --muted: var(--color-neutral-100);
+  --muted-foreground: var(--color-neutral-500);
+  --accent: var(--color-brand-accent);
+  --accent-foreground: var(--color-brand-accent-foreground);
+  --destructive: var(--color-brand-destructive);
+  --destructive-foreground: var(--color-brand-destructive-foreground);
+
+  --border: var(--color-neutral-200);
+  --input: var(--color-neutral-200);
+  --ring: var(--color-neutral-400);
+
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  --sidebar: var(--color-neutral-50);
+  --sidebar-foreground: var(--color-neutral-950);
+  --sidebar-primary: var(--color-brand-primary);
+  --sidebar-primary-foreground: var(--color-brand-primary-foreground);
+  --sidebar-accent: var(--color-neutral-100);
+  --sidebar-accent-foreground: var(--color-neutral-900);
+  --sidebar-border: var(--color-neutral-200);
+  --sidebar-ring: var(--color-neutral-400);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+  --background: var(--color-neutral-950);
+  --foreground: var(--color-neutral-50);
+  --card: var(--color-neutral-900);
+  --card-foreground: var(--color-neutral-50);
+  --popover: var(--color-neutral-900);
+  --popover-foreground: var(--color-neutral-50);
+
+  --primary: var(--color-brand-primary);
+  --primary-foreground: var(--color-brand-primary-foreground);
+  --secondary: var(--color-brand-secondary);
+  --secondary-foreground: var(--color-brand-secondary-foreground);
+  --muted: var(--color-neutral-800);
+  --muted-foreground: var(--color-neutral-400);
+  --accent: var(--color-brand-accent);
+  --accent-foreground: var(--color-brand-accent-foreground);
+  --destructive: var(--color-brand-destructive);
+  --destructive-foreground: var(--color-brand-destructive-foreground);
+
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: var(--color-neutral-500);
+
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
+
+  --sidebar: var(--color-neutral-900);
+  --sidebar-foreground: var(--color-neutral-50);
   --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-primary-foreground: var(--color-neutral-50);
+  --sidebar-accent: var(--color-neutral-800);
+  --sidebar-accent-foreground: var(--color-neutral-50);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: var(--color-neutral-500);
 }
 
 @layer base {
