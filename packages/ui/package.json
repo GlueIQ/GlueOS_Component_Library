@@ -5,6 +5,10 @@
   "exports": {
     ".": "./src/index.ts",
     "./globals.css": "./src/globals.css",
+    "./lib/utils": "./src/lib/utils.ts",
+    "./lib/colors": "./src/lib/colors/index.ts",
+    "./lib/colors/palettes": "./src/lib/colors/palettes.ts",
+    "./lib/colors/generate-theme": "./src/lib/colors/generate-theme.ts",
     "./*": [
       "./src/*.tsx",
       "./src/*.ts"
