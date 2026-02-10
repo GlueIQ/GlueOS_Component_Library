@@ -29,8 +29,8 @@
    ========================================================================== */
 
 :root {
-  --color-brand-primary: var(--color-neutral-900);
-  --color-brand-primary-foreground: var(--color-neutral-50);
+  --color-brand-primary: oklch(0.512 0.206 3.964);
+  --color-brand-primary-foreground: oklch(1 0 0);
   --color-brand-secondary: var(--color-neutral-100);
   --color-brand-secondary-foreground: var(--color-neutral-900);
   --color-brand-accent: var(--color-neutral-100);
@@ -40,8 +40,8 @@
 }
 
 .dark {
-  --color-brand-primary: var(--color-neutral-200);
-  --color-brand-primary-foreground: var(--color-neutral-900);
+  --color-brand-primary: oklch(0.762 0.206 3.964);
+  --color-brand-primary-foreground: oklch(0.145 0 0);
   --color-brand-secondary: var(--color-neutral-800);
   --color-brand-secondary-foreground: var(--color-neutral-50);
   --color-brand-accent: var(--color-neutral-800);
@@ -128,8 +128,8 @@
 
   --sidebar: var(--color-neutral-900);
   --sidebar-foreground: var(--color-neutral-50);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: var(--color-neutral-50);
+  --sidebar-primary: var(--color-brand-primary);
+  --sidebar-primary-foreground: var(--color-brand-primary-foreground);
   --sidebar-accent: var(--color-neutral-800);
   --sidebar-accent-foreground: var(--color-neutral-50);
   --sidebar-border: oklch(1 0 0 / 10%);

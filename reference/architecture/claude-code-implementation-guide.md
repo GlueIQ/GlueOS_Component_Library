@@ -543,6 +543,7 @@ If clean, move to next category.
 **After core components are built, validate with real usage:**
 
 ```
+
 MISSION: Build Internal Tool to Test UI Kit
 
 We're now dogfooding our own UI kit. Build a simple internal tool that exercises the components.
@@ -562,7 +563,6 @@ This will stress-test:
 - Navigation (tabs for different views)
 
 Use `apps/internal-tools` or create new app in monorepo.
-
 CRITICAL: Use ONLY components from packages/ui. If you need something that doesn't exist, ADD IT TO THE UI PACKAGE first, then use it.
 
 Report gaps as you find them.
