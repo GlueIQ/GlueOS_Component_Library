@@ -131,7 +131,7 @@ Patterns (Blocks)
     └── Empty & Error States
 
 Templates
-    ├── Authentication
+    ├── Landing Page
     ├── Dashboard
     ├── Settings & Admin
     ├── Data & Lists
@@ -252,7 +252,7 @@ storybook/
                 ExpandableTable.stories.tsx
         
         4-Templates/
-            4.1-Authentication/
+            4.1-Landing Page/
                 LoginPage.stories.tsx
                 SignupPage.stories.tsx
                 ForgotPasswordPage.stories.tsx

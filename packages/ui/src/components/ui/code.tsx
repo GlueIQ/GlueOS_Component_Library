@@ -7,7 +7,7 @@ const codeVariants = cva("text-foreground", {
   variants: {
     variant: {
       inline:
-        "relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold",
+        "relative rounded bg-muted px-1 py-0.5 font-mono text-sm font-semibold",
       block:
         "relative rounded-lg bg-muted p-4 font-mono text-sm overflow-x-auto",
     },

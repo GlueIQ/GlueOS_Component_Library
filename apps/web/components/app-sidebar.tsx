@@ -164,7 +164,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <a href="/dashboard" className="flex items-center gap-2">
                 <Image
-                  src="/logo.svg"
+                  src="/glueiq-favicon.svg"
                   alt="Glue Logo"
                   width={24}
                   height={24}
