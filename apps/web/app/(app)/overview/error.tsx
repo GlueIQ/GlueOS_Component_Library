@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@repo/ui/components/ui/card";
 
-export default function DashboardError({
+export default function OverviewError({
   error,
   reset,
 }: {
@@ -40,7 +40,7 @@ export default function DashboardError({
             Try again
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/dashboard">Go home</Link>
+            <Link href="/overview">Go home</Link>
           </Button>
         </CardFooter>
       </Card>

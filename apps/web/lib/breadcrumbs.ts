@@ -5,7 +5,7 @@ export interface Breadcrumb {
 
 export function getBreadcrumbs(pathname: string): Breadcrumb[] {
   const breadcrumbMap: Record<string, Breadcrumb[]> = {
-    '/dashboard': [{ label: 'Overview', href: '/dashboard' }],
+    '/overview': [{ label: 'Overview', href: '/overview' }],
     '/generator': [{ label: 'Generator', href: '/generator' }],
   }
 

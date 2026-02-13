@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@repo/ui/components/ui/card"
 
-export default function DashboardPage() {
+export default function OverviewPage() {
   return (
     <Container className="py-8">
       <div className="mb-8">

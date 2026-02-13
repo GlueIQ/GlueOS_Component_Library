@@ -17,6 +17,7 @@ export interface GenerateConfig {
   clientName: string
   projectSlug: string
   neutralPalette: "slate" | "gray" | "zinc" | "neutral" | "stone"
+  chartPalette?: "red" | "orange" | "amber" | "yellow" | "lime" | "green" | "emerald" | "teal" | "cyan" | "sky" | "blue" | "indigo" | "violet" | "purple" | "fuchsia" | "pink" | "rose"
   brandColors: {
     primary?: string
     secondary?: string
@@ -58,6 +59,7 @@ export async function generateProject(
     // Generate themed globals.css and write it into the UI package
     const themeConfig: ThemeConfig = {
       neutralPalette: config.neutralPalette,
+      chartPalette: config.chartPalette,
       brandColors: config.brandColors.primary
         ? config.brandColors
         : undefined,

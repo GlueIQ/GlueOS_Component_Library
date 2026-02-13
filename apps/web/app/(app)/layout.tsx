@@ -9,7 +9,7 @@ import {
 import { ThemeToggle } from "@/components/theme-toggle"
 import { ReactNode } from "react"
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
