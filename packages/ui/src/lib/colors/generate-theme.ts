@@ -20,6 +20,7 @@ import {
   type NeutralPaletteName,
   type PaletteScale,
 } from "./palettes"
+import { getChartColors, type ChromaticPaletteName } from "./chart-palettes"
 
 export interface BrandColors {
   primary?: string
@@ -31,6 +32,7 @@ export interface ThemeConfig {
   neutralPalette: NeutralPaletteName
   brandColors?: BrandColors
   radius?: string
+  chartPalette?: ChromaticPaletteName
 }
 
 /**
@@ -170,6 +172,7 @@ function generateLayer2Dark(brand?: BrandColors): string {
 export function generateThemeCSS(config: ThemeConfig): string {
   const palette = neutralPalettes[config.neutralPalette]
   const radius = config.radius ?? "0.625rem"
+  const chartColors = getChartColors(config.chartPalette ?? "pink")
 
   return `@tailwind base;
 @tailwind components;
@@ -230,11 +233,11 @@ ${generateLayer2Dark(config.brandColors)}
   --input: var(--color-neutral-200);
   --ring: var(--color-neutral-400);
 
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --chart-1: ${chartColors.light[0]};
+  --chart-2: ${chartColors.light[1]};
+  --chart-3: ${chartColors.light[2]};
+  --chart-4: ${chartColors.light[3]};
+  --chart-5: ${chartColors.light[4]};
 
   --sidebar: var(--color-neutral-50);
   --sidebar-foreground: var(--color-neutral-950);
@@ -269,11 +272,11 @@ ${generateLayer2Dark(config.brandColors)}
   --input: oklch(1 0 0 / 15%);
   --ring: var(--color-neutral-500);
 
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  --chart-1: ${chartColors.dark[0]};
+  --chart-2: ${chartColors.dark[1]};
+  --chart-3: ${chartColors.dark[2]};
+  --chart-4: ${chartColors.dark[3]};
+  --chart-5: ${chartColors.dark[4]};
 
   --sidebar: var(--color-neutral-900);
   --sidebar-foreground: var(--color-neutral-50);

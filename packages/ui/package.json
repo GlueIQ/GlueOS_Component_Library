@@ -9,6 +9,18 @@
     "./lib/colors": "./src/lib/colors/index.ts",
     "./lib/colors/palettes": "./src/lib/colors/palettes.ts",
     "./lib/colors/generate-theme": "./src/lib/colors/generate-theme.ts",
+    "./lib/colors/chart-palettes": "./src/lib/colors/chart-palettes.ts",
+    "./components/ui/field": "./src/components/ui/field.tsx",
+    "./patterns/authentication/login-form": "./src/patterns/authentication/login-form/index.ts",
+    "./patterns/authentication/login-form-02": "./src/patterns/authentication/login-form-02/index.ts",
+    "./patterns/authentication/login-form-04": "./src/patterns/authentication/login-form-04/index.ts",
+    "./patterns/authentication/signup-form": "./src/patterns/authentication/signup-form/index.ts",
+    "./patterns/authentication/signup-form-02": "./src/patterns/authentication/signup-form-02/index.ts",
+    "./patterns/authentication/signup-form-04": "./src/patterns/authentication/signup-form-04/index.ts",
+    "./patterns/data-visualization/chart-area-interactive": "./src/patterns/data-visualization/chart-area-interactive/index.ts",
+    "./patterns/data-visualization/chart-bar-interactive": "./src/patterns/data-visualization/chart-bar-interactive/index.ts",
+    "./patterns/data-visualization/chart-line-interactive": "./src/patterns/data-visualization/chart-line-interactive/index.ts",
+    "./patterns/data-visualization/chart-pie-interactive": "./src/patterns/data-visualization/chart-pie-interactive/index.ts",
     "./*": [
       "./src/*.tsx",
       "./src/*.ts"

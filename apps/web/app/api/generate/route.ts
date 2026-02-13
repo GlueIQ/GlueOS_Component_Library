@@ -12,6 +12,11 @@ const generateSchema = z.object({
       "Slug must start with a letter and contain only lowercase letters, numbers, and hyphens",
     ),
   palette: z.enum(["slate", "gray", "zinc", "neutral", "stone"]),
+  chartPalette: z.enum([
+    "red", "orange", "amber", "yellow", "lime", "green", "emerald",
+    "teal", "cyan", "sky", "blue", "indigo", "violet", "purple",
+    "fuchsia", "pink", "rose",
+  ]).optional().default("pink"),
   brandColors: z.object({
     primary: z.string().optional(),
     secondary: z.string().optional(),
@@ -39,6 +44,7 @@ export async function POST(request: NextRequest) {
       clientName: data.clientName,
       projectSlug: data.projectSlug,
       neutralPalette: data.palette,
+      chartPalette: data.chartPalette,
       brandColors: data.brandColors,
       headingFont: data.headingFont,
       bodyFont: data.bodyFont,

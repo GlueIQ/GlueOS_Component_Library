@@ -12,3 +12,11 @@ export {
   type BrandColors,
   type ThemeConfig,
 } from "./generate-theme"
+
+export {
+  chromaticPalettes,
+  chartPaletteDescriptions,
+  getChartColors,
+  CHART_PALETTE_NAMES,
+  type ChromaticPaletteName,
+} from "./chart-palettes"

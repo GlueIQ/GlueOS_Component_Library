@@ -22,6 +22,8 @@ import {
 } from "@repo/ui/components/ui/select"
 import { Slider } from "@repo/ui/components/ui/slider"
 import { Separator } from "@repo/ui/components/ui/separator"
+import type { ChromaticPaletteName } from "@repo/ui/lib/colors/chart-palettes"
+import { ChartPalettePicker } from "./chart-palette-picker"
 import { ColorInput } from "./color-input"
 import { LogoUpload } from "./logo-upload"
 import { PalettePicker } from "./palette-picker"
@@ -61,6 +63,7 @@ export function GeneratorForm() {
   const [primaryColor, setPrimaryColor] = useState("#BC0059")
   const [secondaryColor, setSecondaryColor] = useState("")
   const [accentColor, setAccentColor] = useState("")
+  const [chartPalette, setChartPalette] = useState<ChromaticPaletteName>("pink")
   const [headingFont, setHeadingFont] = useState("Geist")
   const [bodyFont, setBodyFont] = useState("Geist")
   const [radius, setRadius] = useState("0.625")
@@ -100,6 +103,7 @@ export function GeneratorForm() {
           secondary: secondaryColor || undefined,
           accent: accentColor || undefined,
         },
+        chartPalette,
         headingFont,
         bodyFont,
         radius,
@@ -144,6 +148,7 @@ export function GeneratorForm() {
     clientName,
     projectSlug,
     palette,
+    chartPalette,
     primaryColor,
     secondaryColor,
     accentColor,
@@ -228,7 +233,17 @@ export function GeneratorForm() {
           </CardContent>
         </Card>
 
-        {/* Section 4: Logos & Branding */}
+        {/* Section 4: Chart Colors */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Chart Colors</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChartPalettePicker value={chartPalette} onChange={setChartPalette} />
+          </CardContent>
+        </Card>
+
+        {/* Section 5: Logos & Branding */}
         <Card>
           <CardHeader>
             <CardTitle>Logos & Branding</CardTitle>

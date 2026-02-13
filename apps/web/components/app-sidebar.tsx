@@ -43,7 +43,7 @@ const data = {
   gettingStarted: [
     {
       name: "Overview",
-      url: "#",
+      url: "/overview",
       icon: BookOpen,
     },
     {
@@ -162,7 +162,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[state=collapsed]:p-0"
             >
-              <a href="/dashboard" className="flex items-center gap-2">
+              <a href="/overview" className="flex items-center gap-2">
                 <Image
                   src="/glueiq-favicon.svg"
                   alt="Glue Logo"
