@@ -33,7 +33,7 @@
     "check-types": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "dev": "storybook dev -p 6006"
+    "dev": "storybook dev -p 6006 --ci"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.2",

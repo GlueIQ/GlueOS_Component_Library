@@ -1,14 +1,6 @@
-# Turborepo starter
+# GlueOS Component Library
 
-This Turborepo starter is maintained by the Turborepo core team.
-
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
+A comprehensive design system and component library built with React, Next.js, and Tailwind CSS.
 
 ## What's inside?
 
@@ -16,21 +8,60 @@ This Turborepo includes the following packages/apps:
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- `web`: Main Next.js application and generator
+- `example-project`: Example Next.js app demonstrating the component library
+- `project-tracker`: Project tracking Next.js application
+- `@repo/ui`: React component library with Storybook documentation
+- `@repo/eslint-config`: Shared ESLint configurations
+- `@repo/typescript-config`: Shared TypeScript configurations
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
+### Tech Stack
 
 - [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [React](https://react.dev/) for UI components
+- [Next.js](https://nextjs.org/) for applications
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [Storybook](https://storybook.js.org/) for component documentation
+- [Turborepo](https://turbo.build/) for monorepo management
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
+
+## Development Setup
+
+### Option 1: Docker (Recommended)
+
+**Prerequisites:**
+- Docker Desktop
+
+**Quick Start:**
+```bash
+git clone [repo]
+cd glueos-component-library
+docker compose up
+```
+
+**Services:**
+- Web App: http://localhost:3000
+- Example Project: http://localhost:3001
+- Project Tracker: http://localhost:3002
+- Storybook: http://localhost:6006
+
+See [DOCKER.md](./DOCKER.md) for detailed Docker documentation.
+
+### Option 2: Local Development
+
+**Prerequisites:**
+- Node.js 20+
+- pnpm 9+
+
+**Setup:**
+```bash
+pnpm install
+pnpm run build --filter=@repo/ui
+pnpm run dev
+```
 
 ### Build
 
