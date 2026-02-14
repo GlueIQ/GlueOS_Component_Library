@@ -1,0 +1,49 @@
+services:
+  # Web app
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    container_name: {{CLIENT_SLUG}}-web
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/*/node_modules
+      - /app/packages/*/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      # Uncomment and configure if using database
+      # - DATABASE_URL=postgresql://postgres:dev_password_change_in_production@postgres:5432/{{CLIENT_SLUG}}_db
+      # Uncomment if using Redis
+      # - REDIS_URL=redis://redis:6379
+    # depends_on:
+    #   - postgres
+    #   - redis
+    command: pnpm run dev --filter=web
+    networks:
+      - {{CLIENT_SLUG}}-network
+
+  # Add more apps as needed:
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #     target: development
+  #   container_name: {{CLIENT_SLUG}}-api
+  #   volumes:
+  #     - .:/app
+  #     - /app/node_modules
+  #   ports:
+  #     - "3001:3001"
+  #   environment:
+  #     - NODE_ENV=development
+  #     - DATABASE_URL=postgresql://postgres:dev_password_change_in_production@postgres:5432/{{CLIENT_SLUG}}_db
+  #   depends_on:
+  #     - postgres
+  #   command: pnpm run dev --filter=api
+  #   networks:
+  #     - {{CLIENT_SLUG}}-network
