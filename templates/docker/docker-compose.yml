@@ -1,0 +1,64 @@
+services:
+  # PostgreSQL Database (optional - uncomment if needed)
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: {{CLIENT_SLUG}}-postgres
+  #   environment:
+  #     POSTGRES_DB: {{CLIENT_SLUG}}_db
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: dev_password_change_in_production
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - {{CLIENT_SLUG}}-network
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  # Redis Cache (optional - uncomment if needed)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: {{CLIENT_SLUG}}-redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - {{CLIENT_SLUG}}-network
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  # Storybook
+  storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    container_name: {{CLIENT_SLUG}}-storybook
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/*/node_modules
+      - /app/packages/*/node_modules
+    ports:
+      - "6006:6006"
+    environment:
+      - NODE_ENV=development
+    command: pnpm run dev --filter=@{{CLIENT_SLUG}}/ui
+    networks:
+      - {{CLIENT_SLUG}}-network
+
+networks:
+  {{CLIENT_SLUG}}-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:

@@ -132,6 +132,9 @@ export async function generateProject(
       }
     }
 
+    // Copy Docker configuration files from templates/docker
+    copyDockerTemplates(projectDir, config.clientName, config.projectSlug)
+
     // Package the project directory into a zip archive
     const zipBuffer = await createZip(
       projectDir,
@@ -217,6 +220,72 @@ function replaceInAllFiles(
       }
     }
   }
+}
+
+/**
+ * Copy Docker configuration templates to the generated project.
+ * Replaces {{CLIENT_NAME}} and {{CLIENT_SLUG}} placeholders.
+ */
+function copyDockerTemplates(
+  projectDir: string,
+  clientName: string,
+  projectSlug: string,
+): void {
+  const dockerTemplatePath = findDockerTemplatePath()
+
+  // List of Docker template files to copy
+  const dockerFiles = [
+    "Dockerfile.dev",
+    "docker-compose.yml",
+    "docker-compose.dev.yml",
+    ".dockerignore",
+    ".env.example",
+    "Makefile",
+    "DOCKER.md",
+    ".devcontainer/devcontainer.json",
+  ]
+
+  for (const file of dockerFiles) {
+    const srcPath = path.join(dockerTemplatePath, file)
+    const destPath = path.join(projectDir, file)
+
+    if (!fs.existsSync(srcPath)) {
+      console.warn(`Docker template file not found: ${srcPath}`)
+      continue
+    }
+
+    // Ensure destination directory exists
+    const destDir = path.dirname(destPath)
+    fs.mkdirSync(destDir, { recursive: true })
+
+    // Read template content
+    let content = fs.readFileSync(srcPath, "utf-8")
+
+    // Replace placeholders
+    content = content.replaceAll("{{CLIENT_NAME}}", clientName)
+    content = content.replaceAll("{{CLIENT_SLUG}}", projectSlug)
+
+    // Write to destination
+    fs.writeFileSync(destPath, content)
+  }
+}
+
+/**
+ * Find the Docker templates directory.
+ * Similar to findTemplatePath but looks for templates/docker/
+ */
+function findDockerTemplatePath(): string {
+  let dir = process.cwd()
+  for (let i = 0; i < 10; i++) {
+    const candidate = path.join(dir, "templates", "docker")
+    if (fs.existsSync(candidate)) return candidate
+    const parent = path.dirname(dir)
+    if (parent === dir) break
+    dir = parent
+  }
+  throw new Error(
+    "Docker template directory not found. Ensure templates/docker/ exists at the monorepo root.",
+  )
 }
 
 /**
