@@ -1,3 +1,5 @@
+# See docker-compose.yml for port range convention.
+
 services:
   # Web app
   web:

@@ -30,6 +30,17 @@ This starts:
 - PostgreSQL (if enabled): localhost:5432
 - Redis (if enabled): localhost:6379
 
+## Port Range Convention
+
+Each workspace uses its own port range to avoid conflicts when running multiple projects simultaneously:
+
+| Project | Web Apps | Storybook | API/Services |
+|---------|----------|-----------|--------------|
+| **GlueOS/GlueIQ** | 3000–3099 | 6006 | 3100–3199 |
+| **DIRECTV** | 4000–4099 | 6007 | 4100–4199 |
+
+When creating a new workspace, assign a unique range and update the ports in `docker-compose.yml` and `docker-compose.dev.yml` accordingly. This lets you run all workspaces at the same time without conflicts.
+
 ## Configuration
 
 ### 1. Enable Database (PostgreSQL)
@@ -124,11 +135,10 @@ make up       # Start fresh
 3. Ensure `DATABASE_URL` is correct in `.env`
 
 ### Port conflicts
-Stop other services using these ports:
-- 3000 (web app)
-- 6006 (Storybook)
-- 5432 (PostgreSQL)
-- 6379 (Redis)
+Each workspace reserves its own port range (see **Port Range Convention** above). If you still hit conflicts:
+1. Verify no other workspace is using the same range
+2. Check for local services occupying a port: `lsof -i :3000`
+3. Adjust the port in `docker-compose.yml` / `docker-compose.dev.yml` and in the matching `apps/*/package.json` `dev` script
 
 ### Slow on macOS
 Docker on macOS has performance considerations:

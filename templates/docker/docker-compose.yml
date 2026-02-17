@@ -1,3 +1,9 @@
+# Port Range Convention
+# Each workspace uses its own port range to avoid conflicts:
+#   GlueOS/GlueIQ:  Web 3000–3099 | Storybook 6006 | API 3100–3199
+#   DIRECTV:         Web 4000–4099 | Storybook 6007 | API 4100–4199
+# Assign a unique range for this project and update the ports below.
+
 services:
   # PostgreSQL Database (optional - uncomment if needed)
   # postgres:
