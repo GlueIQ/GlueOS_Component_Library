@@ -5,6 +5,7 @@ import {
   Book,
   BookOpen,
   CircleHelp,
+  ClipboardList,
   Component,
   FileCode2,
   FileText,
@@ -72,6 +73,11 @@ const data = {
       name: "Component States",
       url: "#",
       icon: ToggleLeft,
+    },
+    {
+      name: "Migration Audit",
+      url: "/migration-audit",
+      icon: ClipboardList,
     },
     {
       name: "Example Site",
