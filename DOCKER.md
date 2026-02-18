@@ -93,6 +93,17 @@ docker compose up web storybook
 3. Click "Reopen in Container" when prompted
 4. VS Code now runs inside the Docker container
 
+## Port Range Convention
+
+Each workspace uses its own port range to avoid conflicts when running multiple projects simultaneously:
+
+| Project | Web Apps | Storybook | API/Services |
+|---------|----------|-----------|--------------|
+| **GlueOS/GlueIQ** | 3000–3099 | 6006 | 3100–3199 |
+| **DIRECTV** | 4000–4099 | 6007 | 4100–4199 |
+
+When creating a new workspace, assign a unique range and update ports in `docker-compose.yml` and the matching `apps/*/package.json` `dev` scripts.
+
 ## Troubleshooting
 
 ### Containers won't start
@@ -106,7 +117,10 @@ make up      # Start fresh
 Check that volumes are mounted correctly in `docker-compose.yml`
 
 ### Port conflicts
-Stop other services using ports 3000, 3001, 3002, or 6006
+Each workspace reserves its own port range (see **Port Range Convention** above). If you still hit conflicts:
+1. Verify no other workspace is using the same range
+2. Check for local services occupying a port: `lsof -i :3000`
+3. Adjust the port in `docker-compose.yml` and in the matching `apps/*/package.json` `dev` script
 
 ### Performance issues on macOS
 Docker on macOS can be slow. Consider:
