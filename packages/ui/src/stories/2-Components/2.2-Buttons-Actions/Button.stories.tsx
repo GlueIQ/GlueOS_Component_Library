@@ -111,12 +111,3 @@ export const States: Story = {
     </div>
   ),
 }
-
-export const Playground: Story = {
-  args: {
-    children: 'Click me',
-    variant: 'default',
-    size: 'default',
-    disabled: false,
-  },
-}

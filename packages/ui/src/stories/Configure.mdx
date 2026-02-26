@@ -1,451 +1,133 @@
-import { Meta } from "@storybook/blocks";
-export const Image = ({ src, alt, style, width, height, className, layout, ...props }) => {
-  const imgProps = { src, alt, style, className, ...props };
-  if (width !== 0) imgProps.width = width;
-  if (height !== 0) imgProps.height = height;
-  return <img {...imgProps} />;
-};
+import { Meta } from '@storybook/blocks'
 
-import Github from "./assets/github.svg";
-import Discord from "./assets/discord.svg";
-import Youtube from "./assets/youtube.svg";
-import Tutorials from "./assets/tutorials.svg";
-import Styling from "./assets/styling.png";
-import Context from "./assets/context.png";
-import Assets from "./assets/assets.png";
-import Docs from "./assets/docs.png";
-import Share from "./assets/share.png";
-import FigmaPlugin from "./assets/figma-plugin.png";
-import Testing from "./assets/testing.png";
-import Accessibility from "./assets/accessibility.png";
-import Theming from "./assets/theming.png";
-import AddonLibrary from "./assets/addon-library.png";
+<Meta title="GlueOS UI Kit" />
 
-export const RightArrow = () => <svg 
-    viewBox="0 0 14 14" 
-    width="8px" 
-    height="14px" 
-    style={{ 
-      marginLeft: '4px',
-      display: 'inline-block',
-      shapeRendering: 'inherit',
-      verticalAlign: 'middle',
-      fill: 'currentColor',
-      'path fill': 'currentColor'
-    }}
->
-  <path d="m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z" />
-</svg>
+# GlueOS UI Kit
 
-<Meta title="Configure your project" />
+Welcome to the GlueOS UI Kit — a comprehensive, production-ready component library built for modern data-driven applications. This design system provides everything you need to build consistent, accessible, and beautiful user interfaces across the GlueOS ecosystem.
 
-<div className="sb-container">
-  <div className='sb-section-title'>
-    # Configure your project
+## What is the GlueOS UI Kit?
 
-    Because Storybook works separately from your app, you'll need to configure it for your specific stack and setup. Below, explore guides for configuring Storybook with popular frameworks and tools. If you get stuck, learn how you can ask for help from our community.
-  </div>
-  <div className="sb-section">
-    <div className="sb-section-item">
-      <Image
-        src={Styling}
-        alt="A wall of logos representing different styling technologies"
-        width={0}
-        height={0}
-        style={{ width: '100%', height: 'auto' }}
-      />
-      <h4 className="sb-section-item-heading">Add styling and CSS</h4>
-      <p className="sb-section-item-paragraph">Like with web applications, there are many ways to include CSS within Storybook. Learn more about setting up styling within Storybook.</p>
-      <a
-        href="https://storybook.js.org/docs/configure/styling-and-css/?renderer=react&ref=configure"
-        target="_blank"
-      >Learn more<RightArrow /></a>
-    </div>
-    <div className="sb-section-item">
-      <Image 
-        width={0}
-        height={0}
-        style={{ width: '100%', height: 'auto' }}
-        src={Context}
-        alt="An abstraction representing the composition of data for a component"
-      />
-      <h4 className="sb-section-item-heading">Provide context and mocking</h4>
-      <p className="sb-section-item-paragraph">Often when a story doesn't render, it's because your component is expecting a specific environment or context (like a theme provider) to be available.</p>
-      <a
-        href="https://storybook.js.org/docs/writing-stories/decorators/?renderer=react&ref=configure#context-for-mocking"
-        target="_blank"
-      >Learn more<RightArrow /></a>
-    </div>
-    <div className="sb-section-item">
-      <Image 
-        width={0}
-        height={0}
-        style={{ width: '100%', height: 'auto' }} 
-        src={Assets} 
-        alt="A representation of typography and image assets" 
-      />
-      <div>
-        <h4 className="sb-section-item-heading">Load assets and resources</h4>
-        <p className="sb-section-item-paragraph">To link static files (like fonts) to your projects and stories, use the
-        `staticDirs` configuration option to specify folders to load when
-        starting Storybook.</p>
-        <a
-          href="https://storybook.js.org/docs/configure/images-and-assets/?renderer=react&ref=configure"
-          target="_blank"
-        >Learn more<RightArrow /></a>
-      </div>
-    </div>
-  </div>
-</div>
-<div className="sb-container">
-  <div className='sb-section-title'>
-    # Do more with Storybook
+The GlueOS UI Kit is a curated collection of React components, patterns, and design tokens that accelerate development while maintaining design consistency. Built on industry-standard technologies (React, TypeScript, Tailwind CSS, and Radix UI), it provides:
 
-    Now that you know the basics, let's explore other parts of Storybook that will improve your experience. This list is just to get you started. You can customise Storybook in many ways to fit your needs.
-  </div>
+- **60+ Production Components** — From basic buttons to complex data visualizations
+- **Themeable Design System** — Fully customizable colors, typography, spacing, and corner radius
+- **Accessibility Built-In** — WCAG AA compliant components with keyboard navigation and screen reader support
+- **Pattern Library** — Pre-built authentication flows, dashboard layouts, and data visualization patterns
+- **Client Software Generator** — Automated tooling to create branded instances for clients
 
-  <div className="sb-section">
-    <div className="sb-features-grid">
-      <div className="sb-grid-item">
-        <Image 
-          width={0}
-          height={0}
-          style={{ width: '100%', height: 'auto' }} 
-          src={Docs} 
-          alt="A screenshot showing the autodocs tag being set, pointing a docs page being generated" 
-        />
-        <h4 className="sb-section-item-heading">Autodocs</h4>
-        <p className="sb-section-item-paragraph">Auto-generate living,
-          interactive reference documentation from your components and stories.</p>
-        <a
-          href="https://storybook.js.org/docs/writing-docs/autodocs/?renderer=react&ref=configure"
-          target="_blank"
-        >Learn more<RightArrow /></a>
-      </div>
-      <div className="sb-grid-item">
-        <Image 
-          width={0}
-          height={0}
-          style={{ width: '100%', height: 'auto' }} 
-          src={Share} 
-          alt="A browser window showing a Storybook being published to a chromatic.com URL" 
-        />
-        <h4 className="sb-section-item-heading">Publish to Chromatic</h4>
-        <p className="sb-section-item-paragraph">Publish your Storybook to review and collaborate with your entire team.</p>
-        <a
-          href="https://storybook.js.org/docs/sharing/publish-storybook/?renderer=react&ref=configure#publish-storybook-with-chromatic"
-          target="_blank"
-        >Learn more<RightArrow /></a>
-      </div>
-      <div className="sb-grid-item">
-        <Image 
-          width={0}
-          height={0}
-          style={{ width: '100%', height: 'auto' }} 
-          src={FigmaPlugin} 
-          alt="Windows showing the Storybook plugin in Figma" 
-        />
-        <h4 className="sb-section-item-heading">Figma Plugin</h4>
-        <p className="sb-section-item-paragraph">Embed your stories into Figma to cross-reference the design and live
-          implementation in one place.</p>
-        <a
-          href="https://storybook.js.org/docs/sharing/design-integrations/?renderer=react&ref=configure#embed-storybook-in-figma-with-the-plugin"
-          target="_blank"
-        >Learn more<RightArrow /></a>
-      </div>
-      <div className="sb-grid-item">
-        <Image 
-          width={0}
-          height={0}
-          style={{ width: '100%', height: 'auto' }} 
-          src={Testing} 
-          alt="Screenshot of tests passing and failing" 
-        />
-        <h4 className="sb-section-item-heading">Testing</h4>
-        <p className="sb-section-item-paragraph">Use stories to test a component in all its variations, no matter how
-          complex.</p>
-        <a
-          href="https://storybook.js.org/docs/writing-tests/?renderer=react&ref=configure"
-          target="_blank"
-        >Learn more<RightArrow /></a>
-      </div>
-      <div className="sb-grid-item">
-        <Image 
-          width={0}
-          height={0}
-          style={{ width: '100%', height: 'auto' }} 
-          src={Accessibility} 
-          alt="Screenshot of accessibility tests passing and failing" 
-        />
-        <h4 className="sb-section-item-heading">Accessibility</h4>
-        <p className="sb-section-item-paragraph">Automatically test your components for a11y issues as you develop.</p>
-        <a
-          href="https://storybook.js.org/docs/writing-tests/accessibility-testing/?renderer=react&ref=configure"
-          target="_blank"
-        >Learn more<RightArrow /></a>
-      </div>
-      <div className="sb-grid-item">
-        <Image 
-          width={0}
-          height={0}
-          style={{ width: '100%', height: 'auto' }} 
-          src={Theming} 
-          alt="Screenshot of Storybook in light and dark mode" 
-        />
-        <h4 className="sb-section-item-heading">Theming</h4>
-        <p className="sb-section-item-paragraph">Theme Storybook's UI to personalize it to your project.</p>
-        <a
-          href="https://storybook.js.org/docs/configure/theming/?renderer=react&ref=configure"
-          target="_blank"
-        >Learn more<RightArrow /></a>
-      </div>
-    </div>
-  </div>
-</div>
-<div className='sb-addon'>
-  <div className='sb-addon-text'>
-    <h4>Addons</h4>
-    <p className="sb-section-item-paragraph">Integrate your tools with Storybook to connect workflows.</p>
-    <a
-        href="https://storybook.js.org/addons/?ref=configure"
-        target="_blank"
-      >Discover all addons<RightArrow /></a>
-  </div>
-  <div className='sb-addon-img'>
-    <Image 
-      width={650}
-      height={347}
-      src={AddonLibrary} 
-      alt="Integrate your tools with Storybook to connect workflows." 
-    />
-  </div>
-</div>
+## How to Use This Storybook
 
-<div className="sb-section sb-socials">
-    <div className="sb-section-item">
-      <Image 
-        width={32}
-        height={32}
-        layout="fixed"
-        src={Github} 
-        alt="Github logo" 
-        className="sb-explore-image"
-      />
-      Join our contributors building the future of UI development.
+This documentation serves multiple purposes:
 
-      <a
-        href="https://github.com/storybookjs/storybook"
-        target="_blank"
-      >Star on GitHub<RightArrow /></a>
-    </div>
-    <div className="sb-section-item">
-      <Image 
-        width={33}
-        height={32}
-        layout="fixed"
-        src={Discord} 
-        alt="Discord logo" 
-        className="sb-explore-image"
-      />
-      <div>
-        Get support and chat with frontend developers.
+### 1. Component Reference
+Browse through **Foundation**, **Components**, and **Patterns** to explore the full library. Each component includes:
+- Live interactive examples
+- Props documentation and TypeScript definitions
+- Usage guidelines and best practices
+- Accessibility notes
 
-        <a
-          href="https://discord.gg/storybook"
-          target="_blank"
-        >Join Discord server<RightArrow /></a>
-      </div>
-    </div>
-    <div className="sb-section-item">
-      <Image 
-        width={32}
-        height={32}
-        layout="fixed"
-        src={Youtube} 
-        alt="Youtube logo" 
-        className="sb-explore-image"
-      />
-      <div>
-        Watch tutorials, feature previews and interviews.
+### 2. Theme Customization Preview
 
-        <a
-          href="https://www.youtube.com/@chromaticui"
-          target="_blank"
-        >Watch on YouTube<RightArrow /></a>
-      </div>
-    </div>
-    <div className="sb-section-item">
-      <Image 
-        width={33}
-        height={32}
-        layout="fixed"
-        src={Tutorials} 
-        alt="A book" 
-        className="sb-explore-image"
-      />
-      <p>Follow guided walkthroughs on for key workflows.</p>
+For detailed brand customization, visit **[0-Defaults → Configurator](/story/0-defaults-configurator--default)**:
+- Visual neutral palette selector (5 gray scales)
+- Individual brand color pickers (Primary, Secondary, Accent)
+- Visual chart palette selector (17 chromatic options)
+- Separate heading and body font controls
+- Corner radius slider (sharp to rounded)
+- Logo upload for all 4 variants
+- Live preview panel showing real components
 
-      <a
-          href="https://storybook.js.org/tutorials/?ref=configure"
-          target="_blank"
-        >Discover tutorials<RightArrow /></a>
-    </div>
-</div>
+### 3. Client Software Generator
 
-<style>
-  {`
-  .sb-container {
-    margin-bottom: 48px;
-  }
+The Configurator mirrors the interface used in the Client Software Generator web app. When you generate a client project:
 
-  .sb-section {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-  }
+1. Configure brand settings (colors, fonts, logos, radius)
+2. Generator creates a custom monorepo with all settings applied
+3. CSS variables are automatically injected into the theme system
+4. All components inherit the client's brand instantly
 
-  img {
-    object-fit: cover;
-  }
+---
 
-  .sb-section-title {
-    margin-bottom: 32px;
-  }
+## Design System Structure
 
-  .sb-section a:not(h1 a, h2 a, h3 a) {
-    font-size: 14px;
-  }
+The GlueOS UI Kit is organized into three layers:
 
-  .sb-section-item, .sb-grid-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
+### 1. Foundation
+Core design tokens and primitives that form the base of the system:
+- **Colors** — Neutral palettes, brand colors, semantic colors, and chart palettes
+- **Typography** — Font families, type scales, and text utilities
+- **Spacing** — Consistent spacing scale from 0.125rem to 20rem
+- **Shadows** — Elevation system for depth and hierarchy
+- **Logos** — Brand assets (light, dark, icon, favicon variants)
 
-  .sb-section-item-heading {
-    padding-top: 20px !important;
-    padding-bottom: 5px !important;
-    margin: 0 !important;
-  }
-  .sb-section-item-paragraph {
-    margin: 0;
-    padding-bottom: 10px;
-  }
+### 2. Components
+60+ reusable UI building blocks:
+- **Form Controls** — Inputs, selects, checkboxes, radio groups, sliders
+- **Navigation** — Menus, breadcrumbs, tabs, pagination
+- **Feedback** — Alerts, toasts, progress indicators, skeletons
+- **Overlays** — Dialogs, drawers, popovers, tooltips
+- **Data Display** — Tables, cards, badges, avatars, code blocks
+- **Utility** — Buttons, separators, scrollable areas, containers
 
-  .sb-chevron {
-    margin-left: 5px;
-  }
+### 3. Patterns
+Pre-composed patterns for common use cases:
+- **Authentication** — Login forms, signup flows, password reset
+- **Data Visualization** — Interactive charts (line, bar, area, pie, radar, scatter, gauge)
+- **Dashboard Layouts** — Application shells, responsive grids
 
-  .sb-features-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 32px 20px;
-  }
+---
 
-  .sb-socials {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-  }
+## Customizable Theme System
 
-  .sb-socials p {
-    margin-bottom: 10px;
-  }
+| Setting | Options | Applied To |
+|---------|---------|------------|
+| **Neutral Palette** | 5 gray scales (slate, gray, zinc, neutral, stone) | Backgrounds, borders, muted text |
+| **Brand Primary** | Any hex color | Buttons, links, primary actions |
+| **Brand Secondary** | Any hex color | Secondary buttons, accents |
+| **Brand Accent** | Any hex color | Highlights, call-outs, badges |
+| **Chart Palette** | 17 chromatic palettes | Data visualizations, analytics |
+| **Heading Font** | 8 font families | All heading levels (H1-H6) |
+| **Body Font** | 8 font families | Body text, UI copy, paragraphs |
+| **Corner Radius** | 0rem to 1rem | Buttons, cards, inputs, borders |
+| **Logos** | 4 SVG/PNG variants | Navigation, headers, favicons |
 
-  .sb-explore-image {
-    max-height: 32px;
-    align-self: flex-start;
-  }
+---
 
-  .sb-addon {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    position: relative;
-    background-color: #EEF3F8;
-    border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    background: #EEF3F8;
-    height: 180px;
-    margin-bottom: 48px;
-    overflow: hidden;
-  }
+## Getting Started
 
-  .sb-addon-text {
-    padding-left: 48px;
-    max-width: 240px;
-  }
+### Explore Components
+Navigate through the sidebar to browse the full component library. Each story includes interactive examples and comprehensive documentation.
 
-  .sb-addon-text h4 {
-    padding-top: 0px;
-  }
+### Try Theme Customization
+1. Visit the **[Configurator](/story/0-defaults-configurator--default)** for full control
+2. Upload custom logos and see them reflected in the live preview
+3. Experiment with different color combinations and fonts
 
-  .sb-addon-img {
-    position: absolute;
-    left: 345px;
-    top: 0;
-    height: 100%;
-    width: 200%;
-    overflow: hidden;
-  }
+### Use in Development
+The GlueOS UI Kit is available as an npm package (`@repo/ui`) in the monorepo workspace. Import components directly into your application:
 
-  .sb-addon-img img {
-    width: 650px;
-    transform: rotate(-15deg);
-    margin-left: 40px;
-    margin-top: -72px;
-    box-shadow: 0 0 1px rgba(255, 255, 255, 0);
-    backface-visibility: hidden;
-  }
+```tsx
+import { Button, Card, ChartAreaInteractive } from '@repo/ui'
+```
 
-  @media screen and (max-width: 800px) {
-    .sb-addon-img {
-      left: 300px;
-    }
-  }
+---
 
-  @media screen and (max-width: 600px) {
-    .sb-section {
-      flex-direction: column;
-    }
+## Key Features
 
-    .sb-features-grid {
-      grid-template-columns: repeat(1, 1fr);
-    }
+- **TypeScript First** — Full type safety with IntelliSense support
+- **Responsive by Default** — Mobile-first design with breakpoint utilities
+- **Dark Mode Ready** — Automatic theme switching with CSS variables
+- **Tailwind Powered** — Utility-first CSS with design token integration
+- **Accessible** — WCAG AA compliance, keyboard navigation, ARIA attributes
+- **Production Tested** — Battle-tested across GlueOS applications
 
-    .sb-socials {
-      grid-template-columns: repeat(2, 1fr);
-    }
+---
 
-    .sb-addon {
-      height: 280px;
-      align-items: flex-start;
-      padding-top: 32px;
-      overflow: hidden;
-    }
+## Related Resources
 
-    .sb-addon-text {
-      padding-left: 24px;
-    }
-
-    .sb-addon-img {
-      right: 0;
-      left: 0;
-      top: 130px;
-      bottom: 0;
-      overflow: hidden;
-      height: auto;
-      width: 124%;
-    }
-
-    .sb-addon-img img {
-      width: 1200px;
-      transform: rotate(-12deg);
-      margin-left: 0;
-      margin-top: 48px;
-      margin-bottom: -40px;
-      margin-left: -24px;
-    }
-  }
-  `}
-</style>
+- **[Configurator](/story/0-defaults-configurator--default)** — Theme customization interface
+- **[Instructions](/story/0-defaults-instructions--default)** — How to use the Configurator
+- **[Brand Palette](/story/0-defaults-brand-palette--default)** — Color system showcase
+- **[Typography](/story/0-defaults-typography--default)** — Font family examples
+- **[Logos](/story/1-foundation-1-5-logos--default)** — Default logo assets

@@ -1,0 +1,7 @@
+{
+  "name": "GlueOS App Shell Generator",
+  "id": "glueiq-app-shell-generator",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"]
+}

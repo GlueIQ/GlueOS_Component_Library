@@ -71,10 +71,3 @@ export const Status: Story = {
     </div>
   ),
 }
-
-export const Playground: Story = {
-  args: {
-    children: 'Badge',
-    variant: 'default',
-  },
-}

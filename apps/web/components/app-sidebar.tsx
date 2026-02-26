@@ -31,7 +31,6 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "@repo/ui/components/ui/sidebar"
 
@@ -160,27 +159,22 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" data-slot="app-sidebar" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[state=collapsed]:p-0"
-            >
-              <a href="/overview" className="flex items-center gap-2">
-                <Image
-                  src="/glueiq-favicon.svg"
-                  alt="Glue Logo"
-                  width={24}
-                  height={24}
-                  className="size-6 shrink-0"
-                />
-                <div className="truncate group-data-[collapsible=icon]:hidden">
-                  <GlueIQLogo />
-                </div>
-              </a>
-            </SidebarMenuButton>
+            <a href="/overview" className="flex items-center px-2 py-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+              <Image
+                src="/glueiq-favicon.svg"
+                alt="GlueOS"
+                width={32}
+                height={32}
+                className="hidden min-h-6 min-w-6 shrink-0 group-data-[collapsible=icon]:block"
+              />
+              <div className="group-data-[collapsible=icon]:hidden">
+                <GlueIQLogo />
+              </div>
+            </a>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

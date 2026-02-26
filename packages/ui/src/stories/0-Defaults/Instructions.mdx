@@ -1,0 +1,131 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="0-Defaults/Instructions" />
+
+# How to Use the Configurator
+
+The **[Configurator](/story/0-defaults-configurator--default)** is a live preview tool that lets you customize the GlueOS UI Kit theme and see changes in real-time. It mirrors the exact interface used in the Client Software Generator web app.
+
+## Configurator Interface
+
+The Configurator uses a split-panel layout:
+
+- **Left Panel (Form)** — All customization controls
+- **Right Panel (Live Preview)** — Real components showing your changes instantly
+
+---
+
+## Customization Options
+
+### 1. Base Neutral Palette
+Visual selector showing all 5 gray scale options (slate, gray, zinc, neutral, stone).
+
+**Applied to:** Backgrounds, borders, muted text, and all neutral UI elements
+
+**How to use:** Click on any palette card to select it. Each card shows 5 color swatches and a description of the palette's character.
+
+---
+
+### 2. Corner Radius
+Slider control ranging from 0rem (sharp) to 1rem (rounded).
+
+**Applied to:** Buttons, cards, inputs, dialogs, and all UI elements with borders
+
+**How to use:** Drag the slider or click anywhere on the track. The value displays in both rem and pixels.
+
+---
+
+### 3. Brand Colors
+Individual hex color pickers for three brand colors:
+- **Primary** — Main brand color (buttons, links, primary actions)
+- **Secondary** — Supporting brand color (secondary buttons, backgrounds)
+- **Accent** — Highlight color (badges, call-outs, special emphasis)
+
+**How to use:**
+- Click the color square to open the color picker
+- Type a hex value directly in the text input
+- Changes apply immediately to the live preview
+
+---
+
+### 4. Chart Palette
+Visual grid selector showing all 17 chromatic palette options.
+
+**Applied to:** All data visualization components (charts, graphs, analytics displays)
+
+**How to use:** Click on any palette card to select it. Each card shows 5 representative color swatches and the palette name.
+
+---
+
+### 5. Typography
+Separate dropdowns for heading and body fonts (8 options each):
+- **Heading Font** — All heading levels (H1-H6)
+- **Body Font** — Body text, UI copy, paragraphs
+
+**Available fonts:** Inter, System UI, Roboto, Open Sans, Montserrat, Poppins, Lato, Raleway
+
+**How to use:** Select from the dropdown menus. Fonts apply instantly to all text in the preview panel.
+
+---
+
+### 6. Logo Upload
+File upload controls for all 4 logo variants:
+- **Logo (Light Mode)** — Required — For light backgrounds
+- **Logo (Dark Mode)** — Required — For dark backgrounds
+- **Icon / Logo Mark** — Optional — Compact logo for tight spaces
+- **Favicon** — Optional — Browser tab icon
+
+**Accepted formats:** SVG (preferred), PNG
+
+**How to use:**
+- Click the file input to select a logo file
+- Preview appears immediately below the upload button
+- Logo displays in the live preview panel
+
+---
+
+## Live Preview Panel
+
+The right panel shows real UI components with your customization applied:
+
+- **Logo Assets** — Your uploaded logos (or GlueIQ defaults)
+- **Brand Colors** — Color swatches showing your selected brand colors
+- **UI Components** — Buttons, badges, cards with current brand applied
+- **Typography** — Headings and body text in selected fonts
+- **Data Visualization** — Sample chart using selected chart palette
+
+**Note:** All changes update in real-time as you configure settings on the left.
+
+---
+
+## Workflow
+
+### Basic Usage
+1. Navigate to **[0-Defaults → Configurator](/story/0-defaults-configurator--default)**
+2. Adjust settings using the controls in the left panel
+3. Watch the live preview update on the right
+4. Continue refining until you achieve the desired look
+
+### For Client Projects
+1. Configure all brand settings (colors, fonts, logos, radius)
+2. Note your final configuration
+3. Use these exact settings in the Client Software Generator
+4. Generator will create a custom monorepo with everything applied
+
+---
+
+## Tips
+
+- **Start with neutral palette** — This sets the foundation for your entire theme
+- **Upload logos first** — Helps you match brand colors to your actual logo
+- **Use the preview panel** — Scroll through it to see how settings affect different components
+- **Test dark mode** — Use the Storybook toolbar to toggle dark mode and check both logo variants
+
+---
+
+## Related Pages
+
+- **[Brand Palette](/story/0-defaults-brand-palette--default)** — See how current brand colors affect components
+- **[Typography](/story/0-defaults-typography--default)** — Preview typography in context
+- **[Logos](/story/1-foundation-1-5-logos--default)** — View default GlueIQ logo assets
+- **[Palette Pickers](/story/2-components-palette-pickers-neutral-palette-picker--default)** — Standalone palette picker components

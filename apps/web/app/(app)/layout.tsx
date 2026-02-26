@@ -1,36 +1,137 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { PageBreadcrumb } from "@/components/page-breadcrumb"
-import { Separator } from "@repo/ui/components/ui/separator"
+"use client"
+
+import { usePathname } from "next/navigation"
 import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@repo/ui/components/ui/sidebar"
-import { ThemeToggle } from "@/components/theme-toggle"
+  Book,
+  BookOpen,
+  CircleHelp,
+  ClipboardList,
+  Component,
+  FileCode2,
+  FileText,
+  Globe,
+  LayoutGrid,
+  Palette,
+  Search,
+  Settings,
+  Settings2,
+  ToggleLeft,
+  Wand2,
+} from "lucide-react"
+
+import { AppShell, GlueIQLogo, GlueIQIcon } from "@repo/ui/layouts/app-shell"
+import { getBreadcrumbs } from "@/lib/breadcrumbs"
 import { ReactNode } from "react"
 
+const docSections = [
+  {
+    label: "Getting Started",
+    items: [
+      { name: "Overview", url: "/overview", icon: BookOpen },
+      { name: "Instructions", url: "#", icon: FileText },
+      { name: "Configuration", url: "#", icon: Settings2 },
+    ],
+  },
+  {
+    label: "Tools",
+    items: [
+      { name: "Generator", url: "/generator", icon: Wand2 },
+      { name: "Storybook", url: "http://localhost:6006", icon: Book },
+      { name: "Component States", url: "#", icon: ToggleLeft },
+      { name: "Migration Audit", url: "/migration-audit", icon: ClipboardList },
+      { name: "Example Site", url: "#", icon: Globe },
+    ],
+  },
+]
+
+const navSections = [
+  {
+    label: "UI Kit",
+    items: [
+      {
+        title: "Design Tokens",
+        url: "#",
+        icon: Palette,
+        items: [
+          { title: "Color", url: "#" },
+          { title: "Typography", url: "#" },
+          { title: "Spacing & Layout", url: "#" },
+          { title: "Shadows & Effects", url: "#" },
+          { title: "Motion", url: "#" },
+        ],
+      },
+      {
+        title: "Components",
+        url: "#",
+        icon: Component,
+        items: [
+          { title: "Form Controls", url: "#" },
+          { title: "Buttons & Actions", url: "#" },
+          { title: "Navigation", url: "#" },
+          { title: "Feedback & Status", url: "#" },
+          { title: "Data Display", url: "#" },
+          { title: "Layout", url: "#" },
+          { title: "Typography", url: "#" },
+          { title: "Overlays & Modals", url: "#" },
+        ],
+      },
+      {
+        title: "Patterns (Blocks)",
+        url: "#",
+        icon: LayoutGrid,
+        items: [
+          { title: "Authentication", url: "#" },
+          { title: "User Management", url: "#" },
+          { title: "Data Visualization", url: "#" },
+          { title: "Content Management", url: "#" },
+          { title: "Forms", url: "#" },
+          { title: "Empty & Error States", url: "#" },
+        ],
+      },
+      {
+        title: "Layouts",
+        url: "#",
+        icon: FileCode2,
+        items: [
+          { title: "App Shell", url: "#" },
+          { title: "Dashboard", url: "#" },
+          { title: "Settings & Admin", url: "#" },
+          { title: "Data & Lists", url: "#" },
+          { title: "Content Detail", url: "#" },
+        ],
+      },
+    ],
+  },
+]
+
+const secondaryItems = [
+  { title: "Settings", url: "#", icon: Settings },
+  { title: "Get Help", url: "#", icon: CircleHelp },
+  { title: "Search", url: "#", icon: Search },
+]
+
+const user = {
+  name: "mkujawa",
+  email: "matt@glueiq.com",
+  avatar: "/avatars/shadcn.jpg",
+}
+
 export default function AppLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname()
+  const breadcrumbs = getBreadcrumbs(pathname)
+
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex w-full items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
-            />
-            <PageBreadcrumb />
-            <div className="ml-auto">
-              <ThemeToggle />
-            </div>
-          </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {children}
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+    <AppShell
+      logo={<GlueIQLogo />}
+      logoIcon={<GlueIQIcon />}
+      logoHref="/overview"
+      docSections={docSections}
+      navSections={navSections}
+      secondaryItems={secondaryItems}
+      user={user}
+      breadcrumbs={breadcrumbs}
+    >
+      {children}
+    </AppShell>
   )
 }

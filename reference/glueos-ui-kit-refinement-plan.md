@@ -19,7 +19,7 @@ Components (Building Blocks)
     ↓
 Patterns/Blocks (Composed Solutions)
     ↓
-Templates (Full Pages)
+Layouts (Full Page Structures)
 ```
 
 ### Definitions & Industry Context
@@ -85,20 +85,20 @@ Templates (Full Pages)
 
 ---
 
-#### Level 4: Templates
+#### Level 4: Layouts
 **Definition:** Full page layouts that demonstrate how Patterns and Components work together
 
-**Industry names:** Templates (universal), Pages (some systems), Layouts (when focused on structure)
+**Industry names:** Layouts (structure-focused), Templates (universal), Pages (some systems)
 
-**Our naming:** Templates ✅
+**Our naming:** Layouts ✅
 
 **Examples:**
-- Dashboard template
-- Authentication page template
-- Settings page template
-- Data list template
+- App Shell layout (sidebar + header + content area)
+- Dashboard layout
+- Settings & Admin layout
+- Data & Lists layout
 
-**Why this level exists:** Provides starting points for common page types, demonstrates best practices.
+**Why this level exists:** Provides structural starting points for common page types, demonstrates best practices.
 
 ---
 
@@ -130,8 +130,8 @@ Patterns (Blocks)
     ├── Forms
     └── Empty & Error States
 
-Templates
-    ├── Landing Page
+Layouts
+    ├── App Shell ✅ (implemented)
     ├── Dashboard
     ├── Settings & Admin
     ├── Data & Lists
@@ -251,12 +251,8 @@ storybook/
                 SelectableTable.stories.tsx
                 ExpandableTable.stories.tsx
         
-        4-Templates/
-            4.1-Landing Page/
-                LoginPage.stories.tsx
-                SignupPage.stories.tsx
-                ForgotPasswordPage.stories.tsx
-                LandingPage.stories.tsx
+        4-Layouts/
+            AppShell.stories.tsx           ✅ (implemented)
             4.2-Dashboard/
                 DashboardLayout.stories.tsx
                 AnalyticsDashboard.stories.tsx
@@ -701,48 +697,70 @@ export function AnimatedPattern() {
 
 ---
 
-## Part 4: Recommended Templates
+## Part 4: Recommended Layouts
 
-### Software Application Templates
+### Software Application Layouts
 
-#### 4.1 Authentication Templates
+#### 4.0 App Shell Layout ✅ IMPLEMENTED
 
-| Template | Purpose | Sections |
-|----------|---------|----------|
+| Layout | Purpose | Sections |
+|--------|---------|----------|
+| **AppShell** | Base app layout with sidebar | Collapsible sidebar (logo, doc nav, main nav, secondary nav, user profile) + Header bar (sidebar trigger, breadcrumbs, theme toggle, module switcher) + Content area |
+
+**Location:** `packages/ui/src/layouts/app-shell/`
+
+**Components:**
+- `AppShell` — Main orchestrating layout (props-based API)
+- `GlueIQLogo` / `GlueIQIcon` — Theme-aware inline SVG brand logos
+- `AppSwitcher` — GlueOS module switcher (11 modules)
+- `NavMain` — Collapsible sidebar nav with sub-items
+- `NavDocuments` — Flat sidebar nav list
+- `NavSecondary` — Bottom-pinned secondary nav
+- `NavUser` — User profile dropdown
+- `PageBreadcrumb` — Breadcrumb with active module
+- `ThemeToggle` — Light/dark theme toggle
+- `ActiveModuleProvider` — Shared module state context
+
+**Storybook:** `4-Layouts/App Shell` (3 stories: Default, WithBreadcrumbs, MinimalNav)
+
+#### 4.1 Authentication Layouts
+
+| Layout | Purpose | Sections |
+|--------|---------|----------|
 | **LoginPage** | User login | AuthLayout + LoginForm + SSOButtons + Footer |
 | **SignupPage** | New account | AuthLayout + SignupForm + SSOButtons + Terms |
 | **ForgotPasswordPage** | Password reset | AuthLayout + ForgotPasswordForm |
 | **LandingPage** | Pre-login page | Header + Hero + Features + CTA + Footer |
 
-#### 4.2 Dashboard Templates
+#### 4.2 Dashboard Layouts
 
-| Template | Purpose | Sections |
-|----------|---------|----------|
-| **DashboardLayout** | Base app layout | AppHeader + AppSidebar + Main content area + Footer |
+| Layout | Purpose | Sections |
+|--------|---------|----------|
+| **DashboardLayout** | Dashboard base | AppShell + StatsGrid + ChartCards + Data tables |
 | **AnalyticsDashboard** | Metrics overview | PageHeader + StatsGrid + ChartCards + Data tables |
 | **OverviewDashboard** | Mixed content | PageHeader + Stats row + Recent activity + Quick actions |
 
-#### 4.3 Settings & Admin Templates
+#### 4.3 Settings & Admin Layouts
 
-| Template | Purpose | Sections |
-|----------|---------|----------|
+| Layout | Purpose | Sections |
+|--------|---------|----------|
 | **SettingsPage** | User settings | Vertical tabs navigation + Form sections |
 | **AccountSettings** | Account management | Profile section + Password section + Preferences |
 | **TeamSettings** | Team management | Team members table + Invite form + Role management |
 | **AdminPanel** | Admin dashboard | Stats + User management + System settings |
 
-#### 4.4 Data & Lists Templates
+#### 4.4 Data & Lists Layouts
 
-| Template | Purpose | Sections |
-|----------|---------|----------|
+| Layout | Purpose | Sections |
+|--------|---------|----------|
 | **DataTablePage** | Filterable data list | PageHeader + Filters + DataTableWithControls |
 | **ListPage** | Card-based list | PageHeader + Search/Filters + ContentList |
 | **GridView** | Grid of items | PageHeader + View toggle + Responsive grid + Pagination |
 
-#### 4.5 Content Detail Templates
+#### 4.5 Content Detail Layouts
 
-| Template | Purpose | Sections |
-|----------|---------|----------|
+| Layout | Purpose | Sections |
+|--------|---------|----------|
 | **DetailPage** | Single item detail | Breadcrumb + Header + Tabs + Content sections + Actions |
 | **ProfilePage** | User/entity profile | Cover + ProfileCard + Tabs + Activity/Info sections |
 | **ProjectDetail** | Project view | Header + Stats + Tasks table + Team members + Comments |
@@ -780,7 +798,7 @@ export function AnimatedPattern() {
 - [ ] **Dependencies check:** What external libraries does it need?
 - [ ] **Accessibility review:** Does it have proper ARIA, keyboard nav, focus management?
 - [ ] **Responsive behavior:** Does it work mobile to desktop?
-- [ ] **Fits our use case:** Why do we need this specific Block/Template?
+- [ ] **Fits our use case:** Why do we need this specific Block/Layout?
 ```
 
 **Decision tree:**
@@ -838,7 +856,7 @@ export function LoginForm({ ...props }: LoginFormProps) {
 
 #### Step 3: Normalization Checklist
 
-**Every Block/Template must pass this normalization:**
+**Every Block/Layout must pass this normalization:**
 
 ##### 3.1 Token Normalization
 
@@ -892,7 +910,7 @@ size: "sm" | "md" | "lg"
 
 ##### 3.4 Accessibility Normalization
 
-**Every Block/Template must have:**
+**Every Block/Layout must have:**
 
 ```tsx
 // Form fields
@@ -973,7 +991,7 @@ export type { PatternProps }
 
 #### Step 4: Documentation Requirements
 
-**Every Block/Template needs a corresponding Storybook story:**
+**Every Block/Layout needs a corresponding Storybook story:**
 
 ```tsx
 // patterns/authentication/login-form/LoginForm.stories.tsx
@@ -1046,7 +1064,7 @@ export const Loading: Story = {
 
 #### Step 5: Testing & Review
 
-**Before merging any Block/Template:**
+**Before merging any Block/Layout:**
 
 ```markdown
 ## Pre-merge Checklist
@@ -1269,44 +1287,44 @@ export type { PatternNameProps }
 
 ---
 
-### Phase 4: Build Templates - 1 week
+### Phase 4: Build Layouts - 1 week
 
-**Workflow for each Template:**
+**Workflow for each Layout:**
 
 1. **Design phase:** Sketch layout using existing Patterns + Components
-2. **Build:** Compose Template
+2. **Build:** Compose Layout
 3. **Responsive test:** Verify mobile → desktop
 4. **Documentation:** Full-page Storybook story
 5. **Review:** Pass checklist
 6. **Real usage:** Use in example app to validate
 
 **Agent assignments:**
-- **Template Architect:** Plans layout and composition
-- **Template Builder:** Assembles Patterns and Components
+- **Layout Architect:** Plans layout and composition
+- **Layout Builder:** Assembles Patterns and Components
 - **Responsive Specialist:** Ensures proper responsive behavior
-- **Documentation Agent:** Creates template story + usage guide
+- **Documentation Agent:** Creates layout story + usage guide
 - **QA Agent:** Validates in real application context
 
 **Priority order:** (following Part 4)
-1. Authentication templates (for dogfooding)
-2. Dashboard templates (for dogfooding)
-3. Data & lists templates
-4. Settings templates
-5. Detail templates
+1. App Shell layout ✅ (done)
+2. Dashboard layouts (for dogfooding)
+3. Data & lists layouts
+4. Settings layouts
+5. Detail layouts
 
 ---
 
 ## Part 7: Quality Gates
 
 ### Gate 1: Token Compliance
-**No Pattern/Template merges without:**
+**No Pattern/Layout merges without:**
 - 100% use of semantic color tokens
 - Tailwind spacing scale (no arbitrary values)
 - Consistent shadow/radius usage
 - Dark mode variants for all colors
 
 ### Gate 2: Accessibility
-**No Pattern/Template merges without:**
+**No Pattern/Layout merges without:**
 - Keyboard navigation working
 - Screen reader testing passed
 - WCAG AA contrast ratios (light AND dark mode)
@@ -1314,7 +1332,7 @@ export type { PatternNameProps }
 - Animations respect prefers-reduced-motion
 
 ### Gate 3: Documentation
-**No Pattern/Template merges without:**
+**No Pattern/Layout merges without:**
 - Storybook story showing all variants
 - Dark mode demonstrated in Storybook
 - Composition details documented
@@ -1323,7 +1341,7 @@ export type { PatternNameProps }
 - Animation behavior documented (if applicable)
 
 ### Gate 4: Integration
-**No Pattern/Template merges without:**
+**No Pattern/Layout merges without:**
 - Clean TypeScript build
 - No console errors
 - Responsive behavior verified
@@ -2028,23 +2046,24 @@ PHASE 3: Build Patterns (2 weeks)
 - Priority: Authentication → Data Viz → Forms → Error States → User Mgmt → Content → Navigation → Tables
 - Deliverable: Complete Pattern library
 
-PHASE 4: Build Templates (1 week)
-- Follow Part 4 list of recommended Templates
+PHASE 4: Build Layouts (1 week)
+- Follow Part 4 list of recommended Layouts
+- App Shell layout is already complete (4.0)
 - Use workflow from Part 6, Phase 4
 - Compose using existing Patterns + Components
 - Test in real application context
-- Priority: Auth → Dashboard → Data → Settings → Detail
-- Deliverable: Complete Template library
+- Priority: Dashboard → Data → Settings → Detail
+- Deliverable: Complete Layout library
 
 CRITICAL RULES:
-1. Every Pattern/Template must pass normalization checklist (Part 5, Step 3)
-2. Every Pattern/Template must pass pre-merge checklist (Part 5, Step 5)
+1. Every Pattern/Layout must pass normalization checklist (Part 5, Step 3)
+2. Every Pattern/Layout must pass pre-merge checklist (Part 5, Step 5)
 3. No external components - build from our library or add to library first
 4. All documentation must be complete before merge
 5. System drift gets rejected - maintain consistency
 
 QUALITY GATES:
-All four gates from Part 7 must pass before any Pattern/Template merges.
+All four gates from Part 7 must pass before any Pattern/Layout merges.
 
 Begin with Phase 1. Report progress at end of each phase.
 ```
@@ -2054,8 +2073,8 @@ Begin with Phase 1. Report progress at end of each phase.
 ## Summary
 
 **What we've defined:**
-1. ✅ Industry-standard hierarchy: Tokens → Components → Patterns (Blocks) → Templates
-2. ✅ Complete Storybook organization structure with "Patterns (Blocks)" naming
+1. ✅ Industry-standard hierarchy: Tokens → Components → Patterns (Blocks) → Layouts
+2. ✅ Complete Storybook organization structure with "Patterns (Blocks)" and "Layouts" naming
 3. ✅ Core dependencies: next-themes (dark mode) + Framer Motion (animations)
 4. ✅ Comprehensive lists of recommended Patterns and Templates (software-focused)
 5. ✅ Detailed normalization process to prevent system drift
@@ -2079,7 +2098,7 @@ Begin with Phase 1. Report progress at end of each phase.
 - Phase 1 (Reorganize): 2 days
 - Phase 2 (Normalize + Dependencies): 3 days
 - Phase 3 (Patterns): 2 weeks
-- Phase 4 (Templates): 1 week
+- Phase 4 (Layouts): 1 week
 - **Total: ~3-4 weeks for complete V1.0**
 
 **Key dependencies:**

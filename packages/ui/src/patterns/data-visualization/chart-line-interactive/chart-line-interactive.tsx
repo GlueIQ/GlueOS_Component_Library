@@ -3,13 +3,16 @@
 /**
  * ChartLineInteractive Pattern
  *
+ * An interactive line chart with series toggling and summary totals.
+ * Accepts data, series, and display configuration as props.
+ *
  * Composed of: Card, Chart from our component library + recharts
- * Source: shadcn/ui chart-line-interactive (v4)
+ * Source: shadcn/ui chart-line-interactive (v4), extended with configurable API
  * Normalized: 2025-02 — relative imports, semantic tokens
  */
 
 import * as React from "react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import { ChartPaletteStyle } from "../../../lib/chart-palette-utils"
 import type { ChromaticPaletteName } from "../../../lib/colors/chart-palettes"
@@ -22,12 +25,72 @@ import {
 } from "../../../components/ui/card"
 import {
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
 } from "../../../components/ui/chart"
 
-const chartData = [
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+export interface LineSeries {
+  /** Key in data objects for this series' values */
+  dataKey: string
+  /** Display label in legend/tooltip */
+  label: string
+  /** Color — CSS value or chart variable. Falls back to --chart-N */
+  color?: string
+}
+
+export interface ChartLineInteractiveProps {
+  /** Data array */
+  data?: Record<string, unknown>[]
+  /** Series definitions — one per line */
+  series?: LineSeries[]
+  /** Key for X axis @default "date" */
+  xAxisKey?: string
+  /** Title */
+  title?: string
+  /** Description */
+  description?: string
+  /** X axis tick formatter */
+  xAxisFormatter?: (value: string) => string
+  /** Tooltip label formatter */
+  tooltipLabelFormatter?: (value: React.ReactNode) => React.ReactNode
+  /** Curve type @default "monotone" */
+  curveType?: "monotone" | "natural" | "linear" | "step" | "basis"
+  /** Stroke width @default 2 */
+  strokeWidth?: number
+  /** Show dots @default false */
+  showDots?: boolean
+  /** Show series toggle buttons @default true */
+  showSeriesToggle?: boolean
+  /** Format total values @default toLocaleString */
+  formatTotal?: (value: number) => string
+  /** Show Y axis @default false */
+  showYAxis?: boolean
+  /** Show grid @default true */
+  showGrid?: boolean
+  /** Show legend (when toggle hidden) @default false */
+  showLegend?: boolean
+  /** Chart height @default 250 */
+  height?: number
+  /** Palette override */
+  palette?: ChromaticPaletteName
+  /** Show Card wrapper @default true */
+  showCard?: boolean
+  /** CSS class */
+  className?: string
+}
+
+// ---------------------------------------------------------------------------
+// Demo data
+// ---------------------------------------------------------------------------
+
+const defaultData = [
   { date: "2024-04-01", desktop: 222, mobile: 150 },
   { date: "2024-04-02", desktop: 97, mobile: 180 },
   { date: "2024-04-03", desktop: 167, mobile: 120 },
@@ -43,203 +106,176 @@ const chartData = [
   { date: "2024-04-13", desktop: 342, mobile: 380 },
   { date: "2024-04-14", desktop: 137, mobile: 220 },
   { date: "2024-04-15", desktop: 120, mobile: 170 },
-  { date: "2024-04-16", desktop: 138, mobile: 190 },
-  { date: "2024-04-17", desktop: 446, mobile: 360 },
-  { date: "2024-04-18", desktop: 364, mobile: 410 },
-  { date: "2024-04-19", desktop: 243, mobile: 180 },
-  { date: "2024-04-20", desktop: 89, mobile: 150 },
-  { date: "2024-04-21", desktop: 137, mobile: 200 },
-  { date: "2024-04-22", desktop: 224, mobile: 170 },
-  { date: "2024-04-23", desktop: 138, mobile: 230 },
-  { date: "2024-04-24", desktop: 387, mobile: 290 },
-  { date: "2024-04-25", desktop: 215, mobile: 250 },
-  { date: "2024-04-26", desktop: 75, mobile: 130 },
-  { date: "2024-04-27", desktop: 383, mobile: 420 },
-  { date: "2024-04-28", desktop: 122, mobile: 180 },
-  { date: "2024-04-29", desktop: 315, mobile: 240 },
   { date: "2024-04-30", desktop: 454, mobile: 380 },
-  { date: "2024-05-01", desktop: 165, mobile: 220 },
-  { date: "2024-05-02", desktop: 293, mobile: 310 },
-  { date: "2024-05-03", desktop: 247, mobile: 190 },
-  { date: "2024-05-04", desktop: 385, mobile: 420 },
-  { date: "2024-05-05", desktop: 481, mobile: 390 },
-  { date: "2024-05-06", desktop: 498, mobile: 520 },
-  { date: "2024-05-07", desktop: 388, mobile: 300 },
-  { date: "2024-05-08", desktop: 149, mobile: 210 },
-  { date: "2024-05-09", desktop: 227, mobile: 180 },
-  { date: "2024-05-10", desktop: 293, mobile: 330 },
-  { date: "2024-05-11", desktop: 335, mobile: 270 },
-  { date: "2024-05-12", desktop: 197, mobile: 240 },
-  { date: "2024-05-13", desktop: 197, mobile: 160 },
-  { date: "2024-05-14", desktop: 448, mobile: 490 },
   { date: "2024-05-15", desktop: 473, mobile: 380 },
-  { date: "2024-05-16", desktop: 338, mobile: 400 },
-  { date: "2024-05-17", desktop: 499, mobile: 420 },
-  { date: "2024-05-18", desktop: 315, mobile: 350 },
-  { date: "2024-05-19", desktop: 235, mobile: 180 },
-  { date: "2024-05-20", desktop: 177, mobile: 230 },
-  { date: "2024-05-21", desktop: 82, mobile: 140 },
-  { date: "2024-05-22", desktop: 81, mobile: 120 },
-  { date: "2024-05-23", desktop: 252, mobile: 290 },
-  { date: "2024-05-24", desktop: 294, mobile: 220 },
-  { date: "2024-05-25", desktop: 201, mobile: 250 },
-  { date: "2024-05-26", desktop: 213, mobile: 170 },
-  { date: "2024-05-27", desktop: 420, mobile: 460 },
-  { date: "2024-05-28", desktop: 233, mobile: 190 },
-  { date: "2024-05-29", desktop: 78, mobile: 130 },
   { date: "2024-05-30", desktop: 340, mobile: 280 },
-  { date: "2024-05-31", desktop: 178, mobile: 230 },
-  { date: "2024-06-01", desktop: 178, mobile: 200 },
-  { date: "2024-06-02", desktop: 470, mobile: 410 },
-  { date: "2024-06-03", desktop: 103, mobile: 160 },
-  { date: "2024-06-04", desktop: 439, mobile: 380 },
-  { date: "2024-06-05", desktop: 88, mobile: 140 },
-  { date: "2024-06-06", desktop: 294, mobile: 250 },
-  { date: "2024-06-07", desktop: 323, mobile: 370 },
-  { date: "2024-06-08", desktop: 385, mobile: 320 },
-  { date: "2024-06-09", desktop: 438, mobile: 480 },
-  { date: "2024-06-10", desktop: 155, mobile: 200 },
-  { date: "2024-06-11", desktop: 92, mobile: 150 },
-  { date: "2024-06-12", desktop: 492, mobile: 420 },
-  { date: "2024-06-13", desktop: 81, mobile: 130 },
-  { date: "2024-06-14", desktop: 426, mobile: 380 },
   { date: "2024-06-15", desktop: 307, mobile: 350 },
-  { date: "2024-06-16", desktop: 371, mobile: 310 },
-  { date: "2024-06-17", desktop: 475, mobile: 520 },
-  { date: "2024-06-18", desktop: 107, mobile: 170 },
-  { date: "2024-06-19", desktop: 341, mobile: 290 },
-  { date: "2024-06-20", desktop: 408, mobile: 450 },
-  { date: "2024-06-21", desktop: 169, mobile: 210 },
-  { date: "2024-06-22", desktop: 317, mobile: 270 },
-  { date: "2024-06-23", desktop: 480, mobile: 530 },
-  { date: "2024-06-24", desktop: 132, mobile: 180 },
-  { date: "2024-06-25", desktop: 141, mobile: 190 },
-  { date: "2024-06-26", desktop: 434, mobile: 380 },
-  { date: "2024-06-27", desktop: 448, mobile: 490 },
-  { date: "2024-06-28", desktop: 149, mobile: 200 },
-  { date: "2024-06-29", desktop: 103, mobile: 160 },
   { date: "2024-06-30", desktop: 446, mobile: 400 },
 ]
 
-const chartConfig = {
-  views: {
-    label: "Page Views",
-  },
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-1)",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "var(--chart-2)",
-  },
-} satisfies ChartConfig
+const defaultSeries: LineSeries[] = [
+  { dataKey: "desktop", label: "Desktop", color: "var(--chart-1)" },
+  { dataKey: "mobile", label: "Mobile", color: "var(--chart-2)" },
+]
 
-export function ChartLineInteractive({ palette }: { palette?: ChromaticPaletteName } = {}) {
+const defaultXAxisFormatter = (value: string) => {
+  const date = new Date(value)
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+}
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
+export function ChartLineInteractive({
+  data = defaultData,
+  series = defaultSeries,
+  xAxisKey = "date",
+  title = "Line Chart - Interactive",
+  description = "Showing total visitors for the last 3 months",
+  xAxisFormatter = defaultXAxisFormatter,
+  tooltipLabelFormatter,
+  curveType = "monotone",
+  strokeWidth = 2,
+  showDots = false,
+  showSeriesToggle = true,
+  formatTotal = (v) => v.toLocaleString(),
+  showYAxis = false,
+  showGrid = true,
+  showLegend = false,
+  height = 250,
+  palette,
+  showCard = true,
+  className,
+}: ChartLineInteractiveProps) {
   const paletteId = React.useId().replace(/:/g, "")
-  const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("desktop")
 
-  const total = React.useMemo(
-    () => ({
-      desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-      mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
-    }),
-    []
-  )
+  const chartConfig = React.useMemo(() => {
+    const config: ChartConfig = {}
+    series.forEach((s, i) => {
+      config[s.dataKey] = {
+        label: s.label,
+        color: s.color ?? `var(--chart-${i + 1})`,
+      }
+    })
+    return config
+  }, [series])
 
-  const content = (
-    <Card className="py-4 sm:py-0">
-      <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 pb-3 sm:pb-0">
-          <CardTitle>Line Chart - Interactive</CardTitle>
-          <CardDescription>
-            Showing total visitors for the last 3 months
-          </CardDescription>
-        </div>
-        <div className="flex">
-          {["desktop", "mobile"].map((key) => {
-            const chart = key as keyof typeof chartConfig
-            return (
-              <button
-                key={chart}
-                data-active={activeChart === chart}
-                className="data-[active=true]:bg-muted/50 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-t-0 sm:border-l sm:px-8 sm:py-6"
-                onClick={() => setActiveChart(chart)}
-              >
-                <span className="text-muted-foreground text-xs">
-                  {chartConfig[chart].label}
-                </span>
-                <span className="text-lg leading-none font-bold sm:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
-                </span>
-              </button>
-            )
-          })}
-        </div>
-      </CardHeader>
-      <CardContent className="px-2 sm:p-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })
-              }}
+  const [activeChart, setActiveChart] = React.useState(series[0]?.dataKey ?? "")
+
+  const totals = React.useMemo(() => {
+    const result: Record<string, number> = {}
+    series.forEach((s) => {
+      result[s.dataKey] = data.reduce(
+        (acc, curr) => acc + (Number(curr[s.dataKey]) || 0),
+        0
+      )
+    })
+    return result
+  }, [data, series])
+
+  const defaultTooltipFormatter =
+    tooltipLabelFormatter ??
+    ((value: React.ReactNode) =>
+      new Date(String(value)).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }))
+
+  const chartContent = (
+    <ChartContainer
+      config={chartConfig}
+      className="aspect-auto w-full"
+      style={{ height }}
+    >
+      <LineChart accessibilityLayer data={data} margin={{ left: 12, right: 12 }}>
+        {showGrid && <CartesianGrid vertical={false} />}
+        <XAxis
+          dataKey={xAxisKey}
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          minTickGap={32}
+          tickFormatter={xAxisFormatter}
+        />
+        {showYAxis && <YAxis tickLine={false} axisLine={false} />}
+        <ChartTooltip
+          content={
+            <ChartTooltipContent
+              className="w-[150px]"
+              nameKey="views"
+              labelFormatter={defaultTooltipFormatter}
             />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="views"
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })
-                  }}
-                />
-              }
-            />
+          }
+        />
+        {showSeriesToggle ? (
+          <Line
+            dataKey={activeChart}
+            type={curveType}
+            stroke={`var(--color-${activeChart})`}
+            strokeWidth={strokeWidth}
+            dot={showDots}
+          />
+        ) : (
+          series.map((s) => (
             <Line
-              dataKey={activeChart}
-              type="monotone"
-              stroke={`var(--color-${activeChart})`}
-              strokeWidth={2}
-              dot={false}
+              key={s.dataKey}
+              dataKey={s.dataKey}
+              type={curveType}
+              stroke={`var(--color-${s.dataKey})`}
+              strokeWidth={strokeWidth}
+              dot={showDots}
             />
-          </LineChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+          ))
+        )}
+        {showLegend && !showSeriesToggle && (
+          // @ts-expect-error recharts v3 passes payload via render
+          <ChartLegend content={<ChartLegendContent />} />
+        )}
+      </LineChart>
+    </ChartContainer>
   )
 
-  if (!palette) return content
-
-  return (
+  const wrapped = palette ? (
     <div data-chart-palette={paletteId}>
       <ChartPaletteStyle palette={palette} scopeId={paletteId} />
-      {content}
+      {chartContent}
     </div>
+  ) : (
+    chartContent
+  )
+
+  if (!showCard) return <div className={className}>{wrapped}</div>
+
+  return (
+    <Card className={className}>
+      <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
+        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-4 sm:py-6">
+          {title && <CardTitle>{title}</CardTitle>}
+          {description && <CardDescription>{description}</CardDescription>}
+        </div>
+        {showSeriesToggle && (
+          <div className="flex">
+            {series.map((s) => (
+              <button
+                key={s.dataKey}
+                data-active={activeChart === s.dataKey}
+                className="data-[active=true]:bg-muted/50 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-t-0 sm:border-l sm:px-8 sm:py-6"
+                onClick={() => setActiveChart(s.dataKey)}
+              >
+                <span className="text-muted-foreground text-xs">
+                  {chartConfig[s.dataKey]?.label}
+                </span>
+                <span className="text-lg leading-none font-bold sm:text-3xl">
+                  {formatTotal(totals[s.dataKey] ?? 0)}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+      </CardHeader>
+      <CardContent className="px-2 sm:p-6">{wrapped}</CardContent>
+    </Card>
   )
 }
