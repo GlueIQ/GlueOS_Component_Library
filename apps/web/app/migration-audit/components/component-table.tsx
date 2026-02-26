@@ -20,12 +20,18 @@ import { Input } from "@repo/ui/components/ui/input"
 import {
   type AuditComponent,
   type MigrationTier,
-  auditComponents,
   tierColors,
-  tierLabels,
-  tierCounts,
+  appLabels,
+  appColors,
 } from "../data"
 import { UiKitPreview, hasPreview } from "./ui-kit-preview"
+
+interface TierCounts {
+  T1: number
+  T2: number
+  T3: number
+  total: number
+}
 
 function TierBadge({ tier }: { tier: MigrationTier }) {
   return (
@@ -37,8 +43,25 @@ function TierBadge({ tier }: { tier: MigrationTier }) {
   )
 }
 
-function ComponentRow({ component }: { component: AuditComponent }) {
-  const showPreview = component.tier === "T1" && hasPreview(component.uiKitMapping ?? "")
+function AppBadge({ app }: { app: AuditComponent["app"] }) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${appColors[app]}`}
+    >
+      {appLabels[app].replace("GlueIQ ", "")}
+    </span>
+  )
+}
+
+function ComponentRow({
+  component,
+  showApp,
+}: {
+  component: AuditComponent
+  showApp: boolean
+}) {
+  const showPreview =
+    component.tier === "T1" && hasPreview(component.uiKitMapping ?? "")
 
   return (
     <TableRow>
@@ -48,6 +71,11 @@ function ComponentRow({ component }: { component: AuditComponent }) {
           {component.sourcePath}
         </div>
       </TableCell>
+      {showApp && (
+        <TableCell>
+          <AppBadge app={component.app} />
+        </TableCell>
+      )}
       <TableCell>
         <Badge variant="outline" className="text-xs font-normal">
           {component.category}
@@ -78,7 +106,13 @@ function ComponentRow({ component }: { component: AuditComponent }) {
   )
 }
 
-function FilteredTable({ components }: { components: AuditComponent[] }) {
+function FilteredTable({
+  components,
+  showApp,
+}: {
+  components: AuditComponent[]
+  showApp: boolean
+}) {
   const [search, setSearch] = React.useState("")
 
   const filtered = React.useMemo(() => {
@@ -106,6 +140,7 @@ function FilteredTable({ components }: { components: AuditComponent[] }) {
           <TableHeader>
             <TableRow>
               <TableHead className="min-w-52">Component</TableHead>
+              {showApp && <TableHead className="min-w-24">App</TableHead>}
               <TableHead className="min-w-28">Category</TableHead>
               <TableHead className="min-w-36">UI System Type</TableHead>
               <TableHead className="min-w-16">Tier</TableHead>
@@ -116,7 +151,7 @@ function FilteredTable({ components }: { components: AuditComponent[] }) {
           </TableHeader>
           <TableBody>
             {filtered.map((c) => (
-              <ComponentRow key={c.id} component={c} />
+              <ComponentRow key={`${c.app}-${c.id}`} component={c} showApp={showApp} />
             ))}
           </TableBody>
         </Table>
@@ -128,39 +163,50 @@ function FilteredTable({ components }: { components: AuditComponent[] }) {
   )
 }
 
-export function ComponentTable() {
+export function ComponentTable({
+  components,
+  counts,
+  showApp = false,
+}: {
+  components: AuditComponent[]
+  counts: TierCounts
+  showApp?: boolean
+}) {
   return (
     <Tabs defaultValue="all">
       <TabsList>
         <TabsTrigger value="all">
-          All ({tierCounts.total})
+          All ({counts.total})
         </TabsTrigger>
         <TabsTrigger value="T1">
-          T1 Covered ({tierCounts.T1})
+          T1 Covered ({counts.T1})
         </TabsTrigger>
         <TabsTrigger value="T2">
-          T2 Gaps ({tierCounts.T2})
+          T2 Gaps ({counts.T2})
         </TabsTrigger>
         <TabsTrigger value="T3">
-          T3 App ({tierCounts.T3})
+          T3 App ({counts.T3})
         </TabsTrigger>
       </TabsList>
       <TabsContent value="all" className="mt-4">
-        <FilteredTable components={auditComponents} />
+        <FilteredTable components={components} showApp={showApp} />
       </TabsContent>
       <TabsContent value="T1" className="mt-4">
         <FilteredTable
-          components={auditComponents.filter((c) => c.tier === "T1")}
+          components={components.filter((c) => c.tier === "T1")}
+          showApp={showApp}
         />
       </TabsContent>
       <TabsContent value="T2" className="mt-4">
         <FilteredTable
-          components={auditComponents.filter((c) => c.tier === "T2")}
+          components={components.filter((c) => c.tier === "T2")}
+          showApp={showApp}
         />
       </TabsContent>
       <TabsContent value="T3" className="mt-4">
         <FilteredTable
-          components={auditComponents.filter((c) => c.tier === "T3")}
+          components={components.filter((c) => c.tier === "T3")}
+          showApp={showApp}
         />
       </TabsContent>
     </Tabs>

@@ -35,7 +35,7 @@ export function NavMain({
   label: string
 }) {
   return (
-    <SidebarGroup>
+    <SidebarGroup data-slot="nav-main">
       <SidebarGroupLabel>{label}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (

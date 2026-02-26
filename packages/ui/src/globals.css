@@ -87,6 +87,15 @@
   --chart-4: oklch(0.823 0.110 346.018);
   --chart-5: oklch(0.525 0.199 3.958);
 
+  --status-info: oklch(0.656 0.150 251.364);
+  --status-info-foreground: oklch(0.226 0.089 250.415);
+  --status-success: oklch(0.626 0.175 150.571);
+  --status-success-foreground: oklch(0.249 0.096 153.270);
+  --status-warning: oklch(0.725 0.163 82.827);
+  --status-warning-foreground: oklch(0.356 0.120 75.189);
+  --status-error: var(--color-brand-destructive);
+  --status-error-foreground: var(--color-brand-destructive-foreground);
+
   --sidebar: var(--color-neutral-50);
   --sidebar-foreground: var(--color-neutral-950);
   --sidebar-primary: var(--color-brand-primary);
@@ -125,6 +134,15 @@
   --chart-3: oklch(0.656 0.212 354.308);
   --chart-4: oklch(0.899 0.059 343.231);
   --chart-5: oklch(0.592 0.218 0.584);
+
+  --status-info: oklch(0.728 0.120 251.364);
+  --status-info-foreground: oklch(0.876 0.060 250.415);
+  --status-success: oklch(0.698 0.145 150.571);
+  --status-success-foreground: oklch(0.849 0.076 153.270);
+  --status-warning: oklch(0.797 0.133 82.827);
+  --status-warning-foreground: oklch(0.906 0.090 75.189);
+  --status-error: var(--color-brand-destructive);
+  --status-error-foreground: var(--color-brand-destructive-foreground);
 
   --sidebar: var(--color-neutral-900);
   --sidebar-foreground: var(--color-neutral-50);

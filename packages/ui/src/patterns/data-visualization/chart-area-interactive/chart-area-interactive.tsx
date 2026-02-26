@@ -3,13 +3,17 @@
 /**
  * ChartAreaInteractive Pattern
  *
+ * An interactive area chart with time-range filtering, gradient fills,
+ * and stacked areas. Accepts data, series, and display configuration
+ * as props for reuse across applications.
+ *
  * Composed of: Card, Chart, Select from our component library + recharts
- * Source: shadcn/ui chart-area-interactive (v4)
+ * Source: shadcn/ui chart-area-interactive (v4), extended with configurable API
  * Normalized: 2025-02 — relative imports, semantic tokens
  */
 
 import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import { ChartPaletteStyle } from "../../../lib/chart-palette-utils"
 import type { ChromaticPaletteName } from "../../../lib/colors/chart-palettes"
@@ -36,7 +40,120 @@ import {
   SelectValue,
 } from "../../../components/ui/select"
 
-const chartData = [
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+export interface AreaSeries {
+  /** Key in data objects for this series' values */
+  dataKey: string
+  /** Display label in legend/tooltip */
+  label: string
+  /** Color — CSS value or chart variable. Falls back to --chart-N */
+  color?: string
+}
+
+export interface TimeRangeOption {
+  /** Value identifier, e.g. "7d", "30d", "90d" */
+  value: string
+  /** Display label, e.g. "Last 7 days" */
+  label: string
+  /** Number of days to filter from the end of the dataset */
+  days: number
+}
+
+export interface ChartAreaInteractiveProps {
+  /**
+   * Data array. Each object must include the xAxisKey and one numeric value
+   * per series.
+   */
+  data?: Record<string, unknown>[]
+  /**
+   * Series definitions — one per area layer.
+   */
+  series?: AreaSeries[]
+  /**
+   * Key in each data object used for the X axis.
+   * @default "date"
+   */
+  xAxisKey?: string
+  /** Title */
+  title?: string
+  /** Description */
+  description?: string
+  /**
+   * Format function for X axis tick labels.
+   * @default formats dates as "Mon DD"
+   */
+  xAxisFormatter?: (value: string) => string
+  /**
+   * Format function for tooltip label.
+   */
+  tooltipLabelFormatter?: (value: React.ReactNode) => React.ReactNode
+  /**
+   * Whether areas are stacked.
+   * @default true
+   */
+  stacked?: boolean
+  /**
+   * Whether to show gradient fills below the area lines.
+   * @default true
+   */
+  showGradient?: boolean
+  /**
+   * Curve interpolation type.
+   * @default "natural"
+   */
+  curveType?: "natural" | "monotone" | "linear" | "step" | "basis"
+  /**
+   * Whether to show the time-range filter.
+   * When true, provide timeRangeOptions and a dateKey for filtering.
+   * @default true
+   */
+  showTimeFilter?: boolean
+  /**
+   * Options for the time-range filter dropdown.
+   */
+  timeRangeOptions?: TimeRangeOption[]
+  /**
+   * Default selected time range value.
+   * @default "90d"
+   */
+  defaultTimeRange?: string
+  /**
+   * Whether to show the Y axis.
+   * @default false
+   */
+  showYAxis?: boolean
+  /**
+   * Whether to show the grid.
+   * @default true
+   */
+  showGrid?: boolean
+  /**
+   * Whether to show the legend.
+   * @default true
+   */
+  showLegend?: boolean
+  /** Chart height
+   * @default 250
+   */
+  height?: number
+  /** Tailwind color palette override */
+  palette?: ChromaticPaletteName
+  /** Show Card wrapper
+   * @default true
+   */
+  showCard?: boolean
+  /** Additional CSS class */
+  className?: string
+}
+
+// ---------------------------------------------------------------------------
+// Demo data
+// ---------------------------------------------------------------------------
+
+const defaultData = [
   { date: "2024-04-01", desktop: 222, mobile: 150 },
   { date: "2024-04-02", desktop: 97, mobile: 180 },
   { date: "2024-04-03", desktop: 167, mobile: 120 },
@@ -130,156 +247,210 @@ const chartData = [
   { date: "2024-06-30", desktop: 446, mobile: 400 },
 ]
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-1)",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "var(--chart-2)",
-  },
-} satisfies ChartConfig
+const defaultSeries: AreaSeries[] = [
+  { dataKey: "desktop", label: "Desktop", color: "var(--chart-1)" },
+  { dataKey: "mobile", label: "Mobile", color: "var(--chart-2)" },
+]
 
-export function ChartAreaInteractive({ palette }: { palette?: ChromaticPaletteName } = {}) {
+const defaultTimeRangeOptions: TimeRangeOption[] = [
+  { value: "90d", label: "Last 3 months", days: 90 },
+  { value: "30d", label: "Last 30 days", days: 30 },
+  { value: "7d", label: "Last 7 days", days: 7 },
+]
+
+const defaultXAxisFormatter = (value: string) => {
+  const date = new Date(value)
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+}
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
+export function ChartAreaInteractive({
+  data = defaultData,
+  series = defaultSeries,
+  xAxisKey = "date",
+  title = "Area Chart - Interactive",
+  description = "Showing total visitors for the last 3 months",
+  xAxisFormatter = defaultXAxisFormatter,
+  tooltipLabelFormatter,
+  stacked = true,
+  showGradient = true,
+  curveType = "natural",
+  showTimeFilter = true,
+  timeRangeOptions = defaultTimeRangeOptions,
+  defaultTimeRange = "90d",
+  showYAxis = false,
+  showGrid = true,
+  showLegend = true,
+  height = 250,
+  palette,
+  showCard = true,
+  className,
+}: ChartAreaInteractiveProps) {
   const paletteId = React.useId().replace(/:/g, "")
-  const [timeRange, setTimeRange] = React.useState("90d")
+  const [timeRange, setTimeRange] = React.useState(defaultTimeRange)
 
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date)
-    const referenceDate = new Date("2024-06-30")
-    let daysToSubtract = 90
-    if (timeRange === "30d") {
-      daysToSubtract = 30
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7
-    }
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - daysToSubtract)
-    return date >= startDate
-  })
+  // Build chart config from series
+  const chartConfig = React.useMemo(() => {
+    const config: ChartConfig = {}
+    series.forEach((s, i) => {
+      config[s.dataKey] = {
+        label: s.label,
+        color: s.color ?? `var(--chart-${i + 1})`,
+      }
+    })
+    return config
+  }, [series])
 
-  const content = (
-    <Card className="pt-0">
-      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
-        <div className="grid flex-1 gap-1">
-          <CardTitle>Area Chart - Interactive</CardTitle>
-          <CardDescription>
-            Showing total visitors for the last 3 months
-          </CardDescription>
-        </div>
-        <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger
-            className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
-            aria-label="Select a value"
-          >
-            <SelectValue placeholder="Last 3 months" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
-              Last 3 months
-            </SelectItem>
-            <SelectItem value="30d" className="rounded-lg">
-              Last 30 days
-            </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
-              Last 7 days
-            </SelectItem>
-          </SelectContent>
-        </Select>
-      </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <AreaChart data={filteredData}>
-            <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+  // Time-range filtering
+  const filteredData = React.useMemo(() => {
+    if (!showTimeFilter || !data.length) return data
+
+    const option = timeRangeOptions.find((o) => o.value === timeRange)
+    if (!option) return data
+
+    // Find the max date in the data
+    const dates = data
+      .map((d) => new Date(d[xAxisKey] as string))
+      .filter((d) => !isNaN(d.getTime()))
+
+    if (!dates.length) return data
+
+    const maxDate = new Date(Math.max(...dates.map((d) => d.getTime())))
+    const startDate = new Date(maxDate)
+    startDate.setDate(startDate.getDate() - option.days)
+
+    return data.filter((item) => {
+      const date = new Date(item[xAxisKey] as string)
+      return date >= startDate
+    })
+  }, [data, timeRange, showTimeFilter, timeRangeOptions, xAxisKey])
+
+  const defaultTooltipFormatter =
+    tooltipLabelFormatter ??
+    ((value: React.ReactNode) =>
+      new Date(String(value)).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }))
+
+  const gradientId = React.useId().replace(/:/g, "")
+
+  const chartContent = (
+    <ChartContainer
+      config={chartConfig}
+      className="aspect-auto w-full"
+      style={{ height }}
+    >
+      <AreaChart data={filteredData}>
+        {showGradient && (
+          <defs>
+            {series.map((s) => (
+              <linearGradient
+                key={s.dataKey}
+                id={`fill-${s.dataKey}-${gradientId}`}
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop
                   offset="5%"
-                  stopColor="var(--color-desktop)"
+                  stopColor={`var(--color-${s.dataKey})`}
                   stopOpacity={0.8}
                 />
                 <stop
                   offset="95%"
-                  stopColor="var(--color-desktop)"
+                  stopColor={`var(--color-${s.dataKey})`}
                   stopOpacity={0.1}
                 />
               </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })
-              }}
+            ))}
+          </defs>
+        )}
+        {showGrid && <CartesianGrid vertical={false} />}
+        <XAxis
+          dataKey={xAxisKey}
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          minTickGap={32}
+          tickFormatter={xAxisFormatter}
+        />
+        {showYAxis && <YAxis tickLine={false} axisLine={false} />}
+        <ChartTooltip
+          cursor={false}
+          content={
+            <ChartTooltipContent
+              labelFormatter={defaultTooltipFormatter}
+              indicator="dot"
             />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    })
-                  }}
-                  indicator="dot"
-                />
-              }
-            />
-            <Area
-              dataKey="mobile"
-              type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
-              stackId="a"
-            />
-            <Area
-              dataKey="desktop"
-              type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
-              stackId="a"
-            />
-            {/* @ts-expect-error recharts v3 passes payload via render */}
-            <ChartLegend content={<ChartLegendContent />} />
-          </AreaChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+          }
+        />
+        {series.map((s) => (
+          <Area
+            key={s.dataKey}
+            dataKey={s.dataKey}
+            type={curveType}
+            fill={
+              showGradient
+                ? `url(#fill-${s.dataKey}-${gradientId})`
+                : `var(--color-${s.dataKey})`
+            }
+            stroke={`var(--color-${s.dataKey})`}
+            stackId={stacked ? "a" : undefined}
+          />
+        ))}
+        {showLegend && (
+          // @ts-expect-error recharts v3 passes payload via render
+          <ChartLegend content={<ChartLegendContent />} />
+        )}
+      </AreaChart>
+    </ChartContainer>
   )
 
-  if (!palette) return content
-
-  return (
+  const wrapped = palette ? (
     <div data-chart-palette={paletteId}>
       <ChartPaletteStyle palette={palette} scopeId={paletteId} />
-      {content}
+      {chartContent}
     </div>
+  ) : (
+    chartContent
+  )
+
+  if (!showCard)
+    return <div className={className}>{wrapped}</div>
+
+  return (
+    <Card className={className}>
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+        <div className="grid flex-1 gap-1">
+          {title && <CardTitle>{title}</CardTitle>}
+          {description && <CardDescription>{description}</CardDescription>}
+        </div>
+        {showTimeFilter && (
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger
+              className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
+              aria-label="Select a value"
+            >
+              <SelectValue placeholder={timeRangeOptions[0]?.label} />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              {timeRangeOptions.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value} className="rounded-lg">
+                  {opt.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      </CardHeader>
+      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+        {wrapped}
+      </CardContent>
+    </Card>
   )
 }

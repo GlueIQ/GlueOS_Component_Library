@@ -95,11 +95,3 @@ export const States: Story = {
     </div>
   ),
 }
-
-export const Playground: Story = {
-  args: {
-    type: 'text',
-    placeholder: 'Enter some text...',
-    disabled: false,
-  },
-}

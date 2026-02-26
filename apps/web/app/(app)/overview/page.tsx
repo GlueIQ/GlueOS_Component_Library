@@ -64,7 +64,7 @@ export default function OverviewPage() {
           </CardHeader>
           <CardContent>
             <Text variant="small" className="text-muted-foreground">
-              47+ components ready for production use across all client
+              55+ components ready for production use across all client
               projects.
             </Text>
           </CardContent>

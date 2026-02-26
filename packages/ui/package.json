@@ -21,6 +21,7 @@
     "./patterns/data-visualization/chart-bar-interactive": "./src/patterns/data-visualization/chart-bar-interactive/index.ts",
     "./patterns/data-visualization/chart-line-interactive": "./src/patterns/data-visualization/chart-line-interactive/index.ts",
     "./patterns/data-visualization/chart-pie-interactive": "./src/patterns/data-visualization/chart-pie-interactive/index.ts",
+    "./layouts/app-shell": "./src/layouts/app-shell/index.ts",
     "./*": [
       "./src/*.tsx",
       "./src/*.ts"

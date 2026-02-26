@@ -101,19 +101,3 @@ export const List: Story = {
     </div>
   ),
 }
-
-export const Playground: Story = {
-  args: {
-    id: 'playground',
-    disabled: false,
-    defaultChecked: false,
-  },
-  render: (args) => (
-    <div className="flex items-center space-x-2">
-      <Checkbox {...args} />
-      <Label htmlFor={args.id} className="text-sm">
-        Checkbox Label
-      </Label>
-    </div>
-  ),
-}
