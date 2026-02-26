@@ -71,14 +71,23 @@ export { ChartPaletteStyle } from "./lib/chart-palette-utils"
 
 // Layouts
 export * from "./layouts/app-shell"
+export * from "./layouts/dashboard"
+export * from "./layouts/settings-admin"
+export * from "./layouts/data-lists"
+export * from "./layouts/content-detail"
 
-// Patterns
+// Patterns — Authentication
 export * from "./patterns/authentication/login-form"
 export * from "./patterns/authentication/login-form-02"
 export * from "./patterns/authentication/login-form-04"
 export * from "./patterns/authentication/signup-form"
 export * from "./patterns/authentication/signup-form-02"
 export * from "./patterns/authentication/signup-form-04"
+export * from "./patterns/authentication/forgot-password-form"
+export * from "./patterns/authentication/sso-buttons"
+export * from "./patterns/authentication/auth-layout"
+
+// Patterns — Data Visualization
 export * from "./patterns/data-visualization/chart-area-interactive"
 export * from "./patterns/data-visualization/chart-bar-interactive"
 export * from "./patterns/data-visualization/chart-bar-stacked-interactive"
@@ -89,3 +98,40 @@ export * from "./patterns/data-visualization/chart-pie-interactive"
 export * from "./patterns/data-visualization/chart-radar-interactive"
 export * from "./patterns/data-visualization/chart-scatter-interactive"
 export * from "./patterns/data-visualization/chart-venn"
+export * from "./patterns/data-visualization/stats-grid"
+export * from "./patterns/data-visualization/chart-card"
+export * from "./patterns/data-visualization/trend-indicator"
+
+// Patterns — Forms
+export * from "./patterns/forms/multi-step-form"
+export * from "./patterns/forms/form-with-validation"
+export * from "./patterns/forms/settings-form"
+export * from "./patterns/forms/filter-form"
+
+// Patterns — Empty & Error States
+export * from "./patterns/empty-error-states/empty-state"
+export * from "./patterns/empty-error-states/error-state"
+export * from "./patterns/empty-error-states/loading-state"
+export * from "./patterns/empty-error-states/no-results"
+
+// Patterns — User Management
+export * from "./patterns/user-management/profile-card"
+export * from "./patterns/user-management/user-settings-form"
+export * from "./patterns/user-management/user-table"
+export * from "./patterns/user-management/team-member-card"
+
+// Patterns — Content Management
+export * from "./patterns/content-management/content-card"
+export * from "./patterns/content-management/content-list"
+export * from "./patterns/content-management/content-filters"
+export * from "./patterns/content-management/content-search"
+
+// Patterns — Navigation
+export * from "./patterns/navigation/page-header"
+export * from "./patterns/navigation/command-bar"
+
+// Patterns — Data Tables
+export * from "./patterns/data-tables/data-table-with-controls"
+export * from "./patterns/data-tables/sortable-table"
+export * from "./patterns/data-tables/selectable-table"
+export * from "./patterns/data-tables/expandable-table"
