@@ -231,7 +231,6 @@ export function ChartBarStackedInteractive({
         })}
 
         {showLegend && (
-          // @ts-expect-error recharts v3 passes payload via render
           <ChartLegend content={<ChartLegendContent />} />
         )}
       </BarChart>

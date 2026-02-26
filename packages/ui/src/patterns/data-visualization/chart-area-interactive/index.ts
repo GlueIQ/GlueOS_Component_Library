@@ -2,5 +2,5 @@ export { ChartAreaInteractive } from "./chart-area-interactive"
 export type {
   ChartAreaInteractiveProps,
   AreaSeries,
-  TimeRangeOption,
+  ChartTimeRangeOption,
 } from "./chart-area-interactive"

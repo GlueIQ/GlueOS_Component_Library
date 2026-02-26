@@ -246,7 +246,7 @@ const GeneratorConfigurator = () => {
               </div>
               <Slider
                 value={[config.radius]}
-                onValueChange={([value]) => updateConfig('radius', value)}
+                onValueChange={([value]) => updateConfig('radius', value ?? 0)}
                 min={0}
                 max={1}
                 step={0.125}

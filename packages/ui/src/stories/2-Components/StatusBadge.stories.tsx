@@ -48,6 +48,7 @@ export const Default: Story = {
 }
 
 export const AllStatuses: Story = {
+  args: { status: 'in_progress' },
   render: () => (
     <div className="flex flex-wrap gap-3">
       <StatusBadge status="draft" />
@@ -65,6 +66,7 @@ export const AllStatuses: Story = {
 }
 
 export const WithDots: Story = {
+  args: { status: 'draft' },
   render: () => (
     <div className="flex flex-wrap gap-3">
       <StatusBadge status="draft" showDot />
@@ -78,6 +80,7 @@ export const WithDots: Story = {
 }
 
 export const CustomConfiguration: Story = {
+  args: { status: 'collecting' },
   render: () => {
     const customConfig = {
       collecting: {
@@ -114,6 +117,7 @@ export const CustomConfiguration: Story = {
 }
 
 export const CustomLabels: Story = {
+  args: { status: 'draft' },
   render: () => (
     <div className="flex flex-wrap gap-3">
       <StatusBadge status="draft">📝 Draft</StatusBadge>
@@ -132,6 +136,7 @@ export const CustomLabels: Story = {
 }
 
 export const BriefWorkflow: Story = {
+  args: { status: 'draft' },
   render: () => {
     const briefConfig = {
       draft: { label: 'Draft', className: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 border-0' },

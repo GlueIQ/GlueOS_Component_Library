@@ -53,7 +53,7 @@ export interface AreaSeries {
   color?: string
 }
 
-export interface TimeRangeOption {
+export interface ChartTimeRangeOption {
   /** Value identifier, e.g. "7d", "30d", "90d" */
   value: string
   /** Display label, e.g. "Last 7 days" */
@@ -114,7 +114,7 @@ export interface ChartAreaInteractiveProps {
   /**
    * Options for the time-range filter dropdown.
    */
-  timeRangeOptions?: TimeRangeOption[]
+  timeRangeOptions?: ChartTimeRangeOption[]
   /**
    * Default selected time range value.
    * @default "90d"
@@ -252,7 +252,7 @@ const defaultSeries: AreaSeries[] = [
   { dataKey: "mobile", label: "Mobile", color: "var(--chart-2)" },
 ]
 
-const defaultTimeRangeOptions: TimeRangeOption[] = [
+const defaultChartTimeRangeOptions: ChartTimeRangeOption[] = [
   { value: "90d", label: "Last 3 months", days: 90 },
   { value: "30d", label: "Last 30 days", days: 30 },
   { value: "7d", label: "Last 7 days", days: 7 },
@@ -279,7 +279,7 @@ export function ChartAreaInteractive({
   showGradient = true,
   curveType = "natural",
   showTimeFilter = true,
-  timeRangeOptions = defaultTimeRangeOptions,
+  timeRangeOptions = defaultChartTimeRangeOptions,
   defaultTimeRange = "90d",
   showYAxis = false,
   showGrid = true,
@@ -404,7 +404,6 @@ export function ChartAreaInteractive({
           />
         ))}
         {showLegend && (
-          // @ts-expect-error recharts v3 passes payload via render
           <ChartLegend content={<ChartLegendContent />} />
         )}
       </AreaChart>
