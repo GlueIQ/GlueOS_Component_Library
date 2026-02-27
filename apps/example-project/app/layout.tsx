@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GlueOS Design System - Documentation",
-  description: "Component documentation and showcase for the GlueOS design system",
+  title: "GlueOS Platform Demo",
+  description: "Multi-module platform demonstration using the GlueOS design system",
 };
 
 export default function RootLayout({

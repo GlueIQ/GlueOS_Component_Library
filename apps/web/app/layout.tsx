@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GlueOS Design System",
-  description: "Enterprise-grade UI components for marketing software",
+  title: "GlueOS Repo Generator",
+  description: "Generate branded client workspaces from the GlueOS design system",
   icons: { icon: "/glueiq-favicon.svg" },
 };
 
