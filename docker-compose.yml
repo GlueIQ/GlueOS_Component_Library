@@ -1,17 +1,16 @@
 services:
-  # Web app (Generator/Main app)
-  web:
+  # Instance Generator (Main app)
+  instance-generator:
     build:
       context: .
       dockerfile: Dockerfile.dev
       target: development
-    container_name: glueos-web
+    container_name: glueos-instance-generator
     volumes:
       - .:/app
       - /app/node_modules
-      - /app/apps/web/node_modules
-      - /app/apps/example-project/node_modules
-      - /app/apps/project-tracker/node_modules
+      - /app/apps/instance-generator/node_modules
+      - /app/apps/ui-sandbox/node_modules
       - /app/packages/ui/node_modules
       - /app/packages/eslint-config/node_modules
       - /app/packages/typescript-config/node_modules
@@ -20,7 +19,7 @@ services:
     environment:
       - NODE_ENV=development
       - NEXT_TELEMETRY_DISABLED=1
-    command: pnpm run dev --filter=web
+    command: pnpm run dev --filter=instance-generator
     networks:
       - glueos-network
 
@@ -34,9 +33,8 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-      - /app/apps/web/node_modules
-      - /app/apps/example-project/node_modules
-      - /app/apps/project-tracker/node_modules
+      - /app/apps/instance-generator/node_modules
+      - /app/apps/ui-sandbox/node_modules
       - /app/packages/ui/node_modules
       - /app/packages/eslint-config/node_modules
       - /app/packages/typescript-config/node_modules
@@ -48,19 +46,18 @@ services:
     networks:
       - glueos-network
 
-  # Example project (for testing)
-  example:
+  # UI Sandbox (for testing)
+  ui-sandbox:
     build:
       context: .
       dockerfile: Dockerfile.dev
       target: development
-    container_name: glueos-example
+    container_name: glueos-ui-sandbox
     volumes:
       - .:/app
       - /app/node_modules
-      - /app/apps/web/node_modules
-      - /app/apps/example-project/node_modules
-      - /app/apps/project-tracker/node_modules
+      - /app/apps/instance-generator/node_modules
+      - /app/apps/ui-sandbox/node_modules
       - /app/packages/ui/node_modules
       - /app/packages/eslint-config/node_modules
       - /app/packages/typescript-config/node_modules
@@ -69,32 +66,7 @@ services:
     environment:
       - NODE_ENV=development
       - NEXT_TELEMETRY_DISABLED=1
-    command: pnpm run dev --filter=example-project
-    networks:
-      - glueos-network
-
-  # Project Tracker app
-  project-tracker:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-      target: development
-    container_name: glueos-project-tracker
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/apps/web/node_modules
-      - /app/apps/example-project/node_modules
-      - /app/apps/project-tracker/node_modules
-      - /app/packages/ui/node_modules
-      - /app/packages/eslint-config/node_modules
-      - /app/packages/typescript-config/node_modules
-    ports:
-      - "3002:3002"
-    environment:
-      - NODE_ENV=development
-      - NEXT_TELEMETRY_DISABLED=1
-    command: pnpm run dev --filter=project-tracker
+    command: pnpm run dev --filter=ui-sandbox
     networks:
       - glueos-network
 

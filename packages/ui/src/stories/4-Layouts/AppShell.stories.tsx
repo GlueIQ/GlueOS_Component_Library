@@ -1,110 +1,86 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { ThemeProvider } from "next-themes"
 import {
-  Book,
+  Bell,
   BookOpen,
-  CircleHelp,
-  ClipboardList,
-  Component,
-  FileCode2,
-  FileText,
-  Globe,
+  Bot,
+  BrainCircuit,
   LayoutGrid,
-  Palette,
-  Search,
-  Settings,
+  Link,
+  Map,
   Settings2,
-  ToggleLeft,
-  Wand2,
+  Sparkles,
+  SquareTerminal,
 } from "lucide-react"
 
 import { AppShell } from "../../layouts/app-shell"
-import { GlueIQLogo, GlueIQIcon } from "../../layouts/app-shell/glueiq-logo"
 
-const sampleDocSections = [
+const FlameIcon = () => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 19.9093C6 25.4832 10.4762 30 16 30C21.5238 30 26 25.4832 26 19.9093C26 14.8228 21.4898 11.8985 18.898 7.17578C17.3401 4.34077 16.2857 2 16.2857 2C16.2857 2 15.1905 4.09365 13.5442 6.87374C10.7347 11.5965 6 14.8228 6 19.9093Z" fill="#BC0059" />
+  </svg>
+)
+
+const GlueOSWordmark = () => (
+  <span className="truncate text-2xl font-extrabold">
+    Glue<span className="text-primary">OS</span>
+  </span>
+)
+
+const navSections = [
   {
-    label: "Getting Started",
     items: [
-      { name: "Overview", url: "#", icon: BookOpen },
-      { name: "Instructions", url: "#", icon: FileText },
-      { name: "Configuration", url: "#", icon: Settings2 },
+      { title: "Overview", url: "#", icon: LayoutGrid },
+      { title: "Instructions", url: "#", icon: BookOpen },
     ],
   },
   {
     label: "Tools",
     items: [
-      { name: "Generator", url: "#", icon: Wand2 },
-      { name: "Storybook", url: "#", icon: Book },
-      { name: "Component States", url: "#", icon: ToggleLeft },
-      { name: "Migration Audit", url: "#", icon: ClipboardList },
-      { name: "Example Site", url: "#", icon: Globe },
+      { title: "Tool 1", url: "#", icon: SquareTerminal },
+      {
+        title: "Tool Group 2",
+        url: "#",
+        icon: Bot,
+        items: [
+          { title: "Hammer", url: "#" },
+          { title: "Screwdriver", url: "#" },
+          { title: "Saw", url: "#" },
+          { title: "Drill", url: "#" },
+        ],
+      },
+      {
+        title: "Tool Group 3",
+        url: "#",
+        icon: Settings2,
+        items: [
+          { title: "Anvil", url: "#" },
+          { title: "Press", url: "#" },
+          { title: "Plyers", url: "#" },
+          { title: "Wrench", url: "#" },
+        ],
+      },
+      { title: "Tool 4", url: "#", icon: BrainCircuit },
     ],
   },
-]
-
-const sampleNavSections = [
   {
-    label: "UI Kit",
+    label: "Knowledge",
     items: [
-      {
-        title: "Design Tokens",
-        url: "#",
-        icon: Palette,
-        items: [
-          { title: "Color", url: "#" },
-          { title: "Typography", url: "#" },
-          { title: "Spacing & Layout", url: "#" },
-          { title: "Shadows & Effects", url: "#" },
-        ],
-      },
-      {
-        title: "Components",
-        url: "#",
-        icon: Component,
-        isActive: true,
-        items: [
-          { title: "Form Controls", url: "#" },
-          { title: "Buttons & Actions", url: "#" },
-          { title: "Navigation", url: "#" },
-          { title: "Feedback & Status", url: "#" },
-          { title: "Data Display", url: "#" },
-          { title: "Layout", url: "#" },
-          { title: "Overlays & Modals", url: "#" },
-        ],
-      },
-      {
-        title: "Patterns (Blocks)",
-        url: "#",
-        icon: LayoutGrid,
-        items: [
-          { title: "Authentication", url: "#" },
-          { title: "Data Visualization", url: "#" },
-          { title: "Forms", url: "#" },
-        ],
-      },
-      {
-        title: "Layouts",
-        url: "#",
-        icon: FileCode2,
-        items: [
-          { title: "App Shell", url: "#" },
-          { title: "Dashboard", url: "#" },
-          { title: "Settings & Admin", url: "#" },
-        ],
-      },
+      { title: "Ask Glue", url: "#", icon: Sparkles },
+      { title: "Data Sources", url: "#", icon: Link },
+      { title: "Knowledge Graph", url: "#", icon: Map },
     ],
   },
 ]
 
-const sampleSecondaryItems = [
-  { title: "Settings", url: "#", icon: Settings },
-  { title: "Get Help", url: "#", icon: CircleHelp },
-  { title: "Search", url: "#", icon: Search },
+const secondaryItems = [
+  { title: "Get Help", url: "#", icon: Bell },
+  { title: "Settings", url: "#", icon: Settings2 },
 ]
 
-const sampleUser = {
-  name: "Matt Kujawa",
-  email: "matt@glueiq.com",
+const user = {
+  name: "Kevin Flynn",
+  email: "kevin.flynn@glueiq.com",
   avatar: "",
 }
 
@@ -121,14 +97,12 @@ const meta: Meta<typeof AppShell> = {
 
 The foundational layout for GlueOS applications. Provides a complete app shell with:
 
-- **Collapsible sidebar** with logo, navigation sections, and user profile
-- **Header bar** with sidebar trigger, breadcrumbs, theme toggle, and module switcher
-- **Module switcher** dropdown for navigating between GlueOS modules (Horizon, Intelligence, Immersion, etc.)
-- **Blank content area** for page-specific content
+- **Collapsible sidebar** with logo, navigation groups, and user profile
+- **Module switcher** for navigating between GlueOS modules
+- **Secondary nav** pinned to the bottom of the sidebar
+- **Header bar** with sidebar trigger, breadcrumbs, and theme toggle
 
-**Composed of:** Sidebar, SidebarTrigger, Breadcrumb, DropdownMenu, Button, Avatar, Separator
-
-**Props-based API:** Logo, navigation items, user info, and breadcrumbs are all passed as props, making this layout reusable across different client configurations.
+**Props-based API:** Logo, navigation groups, secondary items, user info, and breadcrumbs are all passed as props.
         `,
       },
     },
@@ -146,36 +120,16 @@ export default meta
 type Story = StoryObj<typeof AppShell>
 
 export const Default: Story = {
-  args: {
-    logo: <GlueIQLogo />,
-    logoIcon: <GlueIQIcon />,
-    logoHref: "#",
-    docSections: sampleDocSections,
-    navSections: sampleNavSections,
-    secondaryItems: sampleSecondaryItems,
-    user: sampleUser,
-    breadcrumbs: [],
-  },
-}
-
-export const WithBreadcrumbs: Story = {
-  args: {
-    ...Default.args,
-    breadcrumbs: [
-      { label: "Components", href: "#" },
-      { label: "Button", href: "#" },
-    ],
-  },
-}
-
-export const MinimalNav: Story = {
-  args: {
-    logo: <GlueIQLogo />,
-    logoIcon: <GlueIQIcon />,
-    logoHref: "#",
-    docSections: [sampleDocSections[0]!],
-    navSections: [],
-    secondaryItems: [],
-    user: sampleUser,
-  },
+  args: {},
+  render: () => (
+    <AppShell
+      logoIcon={<FlameIcon />}
+      logo={<GlueOSWordmark />}
+      logoHref="#"
+      navSections={navSections}
+      secondaryItems={secondaryItems}
+      user={user}
+      breadcrumbs={[{ label: "Overview", href: "#" }]}
+    />
+  ),
 }
