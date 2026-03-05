@@ -9,9 +9,8 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
-COPY apps/web/package.json ./apps/web/
-COPY apps/example-project/package.json ./apps/example-project/
-COPY apps/project-tracker/package.json ./apps/project-tracker/
+COPY apps/instance-generator/package.json ./apps/instance-generator/
+COPY apps/ui-sandbox/package.json ./apps/ui-sandbox/
 COPY packages/ui/package.json ./packages/ui/
 COPY packages/eslint-config/package.json ./packages/eslint-config/
 COPY packages/typescript-config/package.json ./packages/typescript-config/
@@ -28,7 +27,7 @@ RUN pnpm run build --filter=@repo/ui
 # Development stage
 FROM base AS development
 ENV NODE_ENV=development
-EXPOSE 3000 3001 3002 6006
+EXPOSE 3000 3001 6006
 
 # Production build stage (for future use)
 FROM base AS build

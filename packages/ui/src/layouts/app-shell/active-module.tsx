@@ -8,8 +8,8 @@ export interface Module {
 }
 
 const defaultModule: Module = {
-  name: "Horizon",
-  description: "Strategic Initiatives",
+  name: "Launchpad",
+  description: "Platform Home",
 }
 
 const ActiveModuleContext = createContext<{
