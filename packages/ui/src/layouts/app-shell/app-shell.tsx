@@ -111,7 +111,7 @@ export function AppShell({
               <NavMain
                 key={section.label ?? i}
                 items={section.items}
-                label={section.label}
+                {...(section.label ? { label: section.label } : {})}
               />
             ))}
             {secondaryItems.length > 0 && (
