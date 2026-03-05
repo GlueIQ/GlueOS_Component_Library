@@ -72,7 +72,7 @@ export default function LaunchpadPage() {
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-3">
                   <div className="flex size-9 items-center justify-center rounded-lg bg-muted-foreground transition-colors group-hover:bg-primary">
-                    <m.icon className="size-4 text-white" />
+                    <m.icon className="size-4 text-neutral-950 group-hover:text-white" />
                   </div>
                   <CardTitle className="text-base">{m.name}</CardTitle>
                 </div>

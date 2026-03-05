@@ -41,7 +41,7 @@
 
 .dark {
   --color-brand-primary: oklch(0.5121 0.206078 3.9803);
-  --color-brand-primary-foreground: oklch(0.145 0 0);
+  --color-brand-primary-foreground: oklch(1 0 0);
   --color-brand-secondary: var(--color-neutral-800);
   --color-brand-secondary-foreground: var(--color-neutral-50);
   --color-brand-accent: var(--color-neutral-800);

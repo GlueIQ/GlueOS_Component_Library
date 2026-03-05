@@ -60,6 +60,7 @@
     "./layouts/settings-admin": "./src/layouts/settings-admin/index.ts",
     "./layouts/data-lists": "./src/layouts/data-lists/index.ts",
     "./layouts/content-detail": "./src/layouts/content-detail/index.ts",
+    "./tailwind.config.base": "./tailwind.config.base.ts",
     "./*": [
       "./src/*.tsx",
       "./src/*.ts"

@@ -90,7 +90,7 @@ export function AppSwitcher() {
               onClick={() => setActiveModule(m)}
             >
               <div className="flex size-5 items-center justify-center rounded bg-muted-foreground shrink-0 transition-colors group-hover/item:bg-primary">
-                <m.icon className="size-3.5 text-white" />
+                <m.icon className="size-3.5 text-white dark:text-neutral-950 group-hover/item:text-white" />
               </div>
               <span className="font-medium">{m.name}</span>
             </NextLink>
