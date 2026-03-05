@@ -186,7 +186,7 @@ export const Default: Story = {
         </SidebarHeader>
         <SidebarContent>
           {navSections.map((section, i) => (
-            <NavMain key={section.label ?? i} items={section.items} label={section.label} />
+            <NavMain key={section.label ?? i} items={section.items} {...(section.label ? { label: section.label } : {})} />
           ))}
           <NavSecondary items={secondaryItems} className="mt-auto" />
         </SidebarContent>
@@ -221,7 +221,7 @@ export const SingleApp: Story = {
         </SidebarHeader>
         <SidebarContent>
           {navSections.map((section, i) => (
-            <NavMain key={section.label ?? i} items={section.items} label={section.label} />
+            <NavMain key={section.label ?? i} items={section.items} {...(section.label ? { label: section.label } : {})} />
           ))}
           <NavSecondary items={secondaryItems} className="mt-auto" />
         </SidebarContent>
