@@ -422,12 +422,21 @@ const optimizeNav: ModuleNav = {
 const connectNav: ModuleNav = {
   docSections: [
     {
-      label: "Integrations",
+      label: "Data Pipelines",
       items: [
-        { name: "Integrations", url: "/connect", icon: Database },
+        { name: "Connected Sources", url: "/connect", icon: Database },
         { name: "Data Health", url: "#", icon: BarChart3 },
-        { name: "Pipeline Viewer", url: "#", icon: LineChart },
+        { name: "Sync Viewer", url: "#", icon: LineChart },
         { name: "Schema Mapper", url: "#", icon: FileText },
+      ],
+    },
+    {
+      label: "Action Pipelines",
+      items: [
+        { name: "Action Registry", url: "#", icon: Zap },
+        { name: "Execution Log", url: "#", icon: ScrollText },
+        { name: "Guardrails", url: "#", icon: ShieldCheck },
+        { name: "Execution Health", url: "#", icon: AlertTriangle },
       ],
     },
   ],

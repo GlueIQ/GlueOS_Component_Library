@@ -1,7 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import { Activity, AlertCircle, CheckCircle2, Clock, Database, RefreshCw, Wifi, WifiOff } from "lucide-react"
+import {
+  Activity,
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  Database,
+  RefreshCw,
+  Wifi,
+  WifiOff,
+  Zap,
+} from "lucide-react"
 
 import { Container } from "@repo/ui/components/ui/container"
 import { Button } from "@repo/ui/components/ui/button"
@@ -42,8 +52,11 @@ const HX = 450
 const HY = 228
 const R: Record<NodeType, number> = { source: 20, hub: 32, module: 20 }
 
+// Sources that also accept action executions from GlueOS modules
+const actionCapableIds = new Set(["google-ads", "meta-ads", "linkedin", "marketo"])
+
 const kgNodes: KGNode[] = [
-  // Sources — left column, 8 nodes centered on HY=228
+  // Sources — left column
   { id: "google-ads",   abbr: "GA", label: "Google Ads",    sublabel: "Paid Search",       type: "source", x: 160, y:  35, color: "#3b82f6", status: "healthy" },
   { id: "meta-ads",     abbr: "FB", label: "Meta Ads",       sublabel: "Paid Social",       type: "source", x: 160, y:  90, color: "#6366f1", status: "healthy" },
   { id: "salesforce",   abbr: "SF", label: "Salesforce",     sublabel: "CRM",               type: "source", x: 160, y: 145, color: "#0ea5e9", status: "healthy" },
@@ -54,33 +67,37 @@ const kgNodes: KGNode[] = [
   { id: "ga4",          abbr: "G4", label: "GA4",             sublabel: "Web Analytics",     type: "source", x: 160, y: 420, color: "#f59e0b", status: "healthy" },
   // Hub — center
   { id: "glue",         abbr: "GL", label: "GlueOS Connect", sublabel: "Knowledge Graph",   type: "hub",    x: HX,  y: HY,  color: "#6366f1" },
-  // Modules — right column, 5 nodes centered on HY=228
+  // Modules — right column
   { id: "intelligence", abbr: "IN", label: "Intelligence",    sublabel: "Perf. Analytics",   type: "module", x: 740, y:  84, color: "#3b82f6" },
   { id: "zoltar",       abbr: "ZL", label: "Zoltar",          sublabel: "Forecasting",       type: "module", x: 740, y: 156, color: "#8b5cf6" },
   { id: "horizon",      abbr: "HZ", label: "Horizon",         sublabel: "Strategic Planning",type: "module", x: 740, y: 228, color: "#10b981" },
-  { id: "optimize",     abbr: "OP", label: "Optimize",        sublabel: "Optimization",      type: "module", x: 740, y: 300, color: "#f59e0b" },
+  { id: "optimize",     abbr: "OP", label: "Optimize",        sublabel: "Optimization",      type: "module", x: 740, y: 300, color: "#f97316" },
   { id: "lumen",        abbr: "LU", label: "Lumen",           sublabel: "Exec. Intelligence",type: "module", x: 740, y: 372, color: "#06b6d4" },
 ]
 
+// Data-in edges: source → hub, hub → module
 const kgEdges: KGEdge[] = [
   ...kgNodes.filter(n => n.type === "source").map(n => ({ from: n.id, to: "glue" })),
   ...kgNodes.filter(n => n.type === "module").map(n => ({ from: "glue", to: n.id })),
 ]
 
+// Action-out edges: hub → action-capable sources (right-to-left, dashed)
+const kgActionEdges: KGEdge[] = Array.from(actionCapableIds).map(id => ({ from: "glue", to: id }))
+
 const kgInfo: Record<string, { headline: string; detail: string }> = {
-  "google-ads":   { headline: "Google Ads — Paid Search",              detail: "Status: Healthy · Last sync 4 min ago · 24.1K campaign metric records" },
-  "meta-ads":     { headline: "Meta Ads — Paid Social",                detail: "Status: Healthy · Last sync 6 min ago · 18.7K records synced" },
-  "salesforce":   { headline: "Salesforce — CRM",                      detail: "Status: Healthy · Last sync 12 min ago · 9.4K contact and pipeline records" },
-  "hubspot":      { headline: "HubSpot — CRM",                         detail: "Status: Degraded · Rate limit exceeded · Partial sync: 4.1K / 6.2K records" },
-  "linkedin":     { headline: "LinkedIn Ads — Paid Social",            detail: "Status: Healthy · Last sync 8 min ago · 11.3K ad performance records" },
-  "marketo":      { headline: "Marketo — Marketing Automation",        detail: "Status: Error · Auth token expired · Last successful sync: 3 hours ago" },
-  "snowflake":    { headline: "Snowflake — Data Warehouse",            detail: "Status: Healthy · Last sync 22 min ago · 142K records — largest source" },
-  "ga4":          { headline: "GA4 — Web Analytics",                   detail: "Status: Healthy · Last sync 15 min ago · 88.4K behavioral event records" },
-  "glue":         { headline: "GlueOS Connect — Knowledge Graph",      detail: "14 connected sources · 5 intelligent modules · 330K+ records unified · 92% sync health" },
+  "google-ads":   { headline: "Google Ads — Paid Search",              detail: "Data In: Healthy · Last sync 4 min ago · 24.1K records · Action Out: Budget & bid executions from Optimize · 11 actions in 24h" },
+  "meta-ads":     { headline: "Meta Ads — Paid Social",                detail: "Data In: Healthy · Last sync 6 min ago · 18.7K records · Action Out: Creative rotations & budget changes from Optimize · 6 actions in 24h" },
+  "salesforce":   { headline: "Salesforce — CRM",                      detail: "Data In: Healthy · Last sync 12 min ago · 9.4K contact and pipeline records" },
+  "hubspot":      { headline: "HubSpot — CRM",                         detail: "Data In: Degraded · Rate limit exceeded · Partial sync: 4.1K / 6.2K records" },
+  "linkedin":     { headline: "LinkedIn Ads — Paid Social",            detail: "Data In: Healthy · Last sync 8 min ago · 11.3K records · Action Out: Bid floor & budget adjustments from Optimize · 5 actions in 24h" },
+  "marketo":      { headline: "Marketo — Marketing Automation",        detail: "Data In: Error · Auth token expired · Action Out: Audience segment pushes from Orchestrate (blocked — auth fix required)" },
+  "snowflake":    { headline: "Snowflake — Data Warehouse",            detail: "Data In: Healthy · Last sync 22 min ago · 142K records — largest source" },
+  "ga4":          { headline: "GA4 — Web Analytics",                   detail: "Data In: Healthy · Last sync 15 min ago · 88.4K behavioral event records" },
+  "glue":         { headline: "GlueOS Connect — Knowledge Graph",      detail: "14 sources connected · 5 modules powered · 330K+ records unified · Data flowing in from all sources · 24 actions executed on 4 platforms in 24h" },
   "intelligence": { headline: "Intelligence — Performance Analytics",  detail: "Receives: Campaign metrics, CRM pipeline, Web behavior, Paid social signals" },
   "zoltar":       { headline: "Zoltar — Predictive Forecasting",       detail: "Receives: Pipeline data, CRM signals, Historical spend, Conversion patterns" },
   "horizon":      { headline: "Horizon — Strategic Planning",          detail: "Receives: Market signals, Budget actuals, Initiative progress, Competitive data" },
-  "optimize":     { headline: "Optimize — Campaign Optimization",      detail: "Receives: Channel performance, Creative metrics, Bid data, Audience segments" },
+  "optimize":     { headline: "Optimize — Campaign Optimization",      detail: "Receives: Channel performance, Creative metrics, Bid data, Audience segments · Executes: Budget, bid & creative actions on Google Ads, Meta Ads, LinkedIn" },
   "lumen":        { headline: "Lumen — Executive Intelligence",        detail: "Receives: Blended KPIs, Brand health, Market position, Financial performance" },
 }
 
@@ -89,7 +106,7 @@ function KnowledgeGraph() {
   const [hovered,  setHovered]  = useState<string | null>(null)
   const active = selected ?? hovered
 
-  // Edge appearance helpers
+  // Data-in edge helpers
   const edgeStroke = (e: KGEdge): string => {
     const from = kgNodes.find(n => n.id === e.from)!
     if (from.type === "source") {
@@ -116,6 +133,19 @@ function KnowledgeGraph() {
     return 1
   }
 
+  // Action-out edge helpers
+  const actionEdgeOpacity = (sourceId: string): number => {
+    if (!active) return 0.2
+    if (active === "glue") return 0.55
+    if (active === "optimize" || active === sourceId) return 0.8
+    return 0.04
+  }
+
+  const actionEdgeWidth = (sourceId: string): number => {
+    if (!active) return 1
+    return (active === "optimize" || active === sourceId) ? 2 : 1
+  }
+
   const nodeOp = (id: string): number => {
     if (!active || id === active || id === "glue") return 1
     const at = kgNodes.find(n => n.id === active)?.type
@@ -132,9 +162,18 @@ function KnowledgeGraph() {
     <div className="space-y-3">
       {/* Legend */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+        <span className="font-semibold text-foreground">Data In:</span>
         <span className="flex items-center gap-1.5"><span className="inline-block size-2 rounded-full bg-emerald-500" />Healthy</span>
         <span className="flex items-center gap-1.5"><span className="inline-block size-2 rounded-full bg-amber-500"  />Degraded</span>
         <span className="flex items-center gap-1.5"><span className="inline-block size-2 rounded-full bg-red-500"    />Error</span>
+        <span className="text-border/60">·</span>
+        <span className="font-semibold text-foreground">Action Out:</span>
+        <span className="flex items-center gap-1.5">
+          <svg width="20" height="5" className="inline-block shrink-0">
+            <line x1="0" y1="2.5" x2="20" y2="2.5" stroke="#f97316" strokeWidth="1.5" strokeDasharray="4 2.5" />
+          </svg>
+          Execution flow
+        </span>
         <span className="ml-auto hidden sm:inline">Click any node to explore connections</span>
       </div>
 
@@ -144,9 +183,30 @@ function KnowledgeGraph() {
           viewBox="0 0 900 470"
           className="w-full"
           style={{ display: "block" }}
-          aria-label="Interactive knowledge graph showing data sources connected to GlueOS modules"
+          aria-label="Interactive knowledge graph showing bidirectional data and action flows"
         >
-          {/* Edges */}
+          {/* Action-out edges (dashed, orange) — rendered first, underneath */}
+          {kgActionEdges.map((edge, i) => {
+            const from = kgNodes.find(n => n.id === edge.from)! // hub
+            const to   = kgNodes.find(n => n.id === edge.to)!   // source platform
+            const mx   = (from.x + to.x) / 2
+            const d    = `M ${from.x} ${from.y} C ${mx} ${from.y} ${mx} ${to.y} ${to.x} ${to.y}`
+            return (
+              <path
+                key={`action-${i}`}
+                d={d}
+                fill="none"
+                stroke="#f97316"
+                strokeWidth={actionEdgeWidth(edge.to)}
+                opacity={actionEdgeOpacity(edge.to)}
+                strokeLinecap="round"
+                strokeDasharray="5 3"
+                style={{ transition: "opacity 0.18s ease, stroke-width 0.15s ease" }}
+              />
+            )
+          })}
+
+          {/* Data-in edges */}
           {kgEdges.map((edge, i) => {
             const from = kgNodes.find(n => n.id === edge.from)!
             const to   = kgNodes.find(n => n.id === edge.to)!
@@ -175,6 +235,8 @@ function KnowledgeGraph() {
             const isHov  = node.id === hovered && !isSel
             const isHub  = node.type === "hub"
             const sColor = node.status === "error" ? "#ef4444" : node.status === "warning" ? "#f59e0b" : null
+            // Action-capable sources get an extra orange ring indicator
+            const isActionable = actionCapableIds.has(node.id)
 
             return (
               <g
@@ -191,11 +253,13 @@ function KnowledgeGraph() {
                 {isHov && <circle cx={node.x} cy={node.y} r={r + 6}  fill="none" stroke={node.color} strokeWidth={1.5} opacity={0.3} />}
                 {/* Status ring (warning / error) */}
                 {sColor && <circle cx={node.x} cy={node.y} r={r + 3}  fill="none" stroke={sColor} strokeWidth={2} opacity={0.65} />}
+                {/* Action-capable ring (orange dashed indicator) */}
+                {isActionable && !sColor && <circle cx={node.x} cy={node.y} r={r + 3} fill="none" stroke="#f97316" strokeWidth={1} strokeDasharray="3 2" opacity={0.4} />}
                 {/* Main circle */}
                 <circle cx={node.x} cy={node.y} r={r} fill={node.color} />
                 {/* Hub inner detail ring */}
                 {isHub && <circle cx={node.x} cy={node.y} r={r - 9} fill="none" stroke="white" strokeWidth={1} opacity={0.3} />}
-                {/* Abbreviation inside circle */}
+                {/* Abbreviation */}
                 <text
                   x={node.x} y={node.y + 1}
                   textAnchor="middle" dominantBaseline="middle"
@@ -239,7 +303,7 @@ function KnowledgeGraph() {
             <p className="mt-0.5 text-xs text-muted-foreground">{info.detail}</p>
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">Click any node to explore data connections across the knowledge graph</p>
+          <p className="text-sm text-muted-foreground">Click any node to explore data and action connections · Dashed orange lines show action execution flows</p>
         )}
       </div>
     </div>
@@ -247,15 +311,30 @@ function KnowledgeGraph() {
 }
 
 // ---------------------------------------------------------------------------
-// Page data
+// Page data — Data Pipeline KPIs
 // ---------------------------------------------------------------------------
 
-const stats = [
-  { label: "Connected Sources", value: "14", icon: <Database className="size-4" />, description: "Across 5 categories" },
-  { label: "Sync Health",        value: "92%", icon: <Activity className="size-4" />, trend: { value: 2, label: "vs last week" } },
-  { label: "Failed Syncs (24h)", value: "3",   icon: <AlertCircle className="size-4" />, description: "2 require attention" },
-  { label: "Avg Freshness",      value: "18 min", icon: <Clock className="size-4" />, description: "Across all active syncs" },
+const dataStats = [
+  { label: "Connected Sources", value: "14",     icon: <Database      className="size-4" />, description: "Across 5 categories" },
+  { label: "Sync Health",        value: "92%",    icon: <Activity      className="size-4" />, trend: { value: 2,  label: "vs last week" } },
+  { label: "Failed Syncs (24h)", value: "3",      icon: <AlertCircle   className="size-4" />, description: "2 require attention" },
+  { label: "Avg Freshness",      value: "18 min", icon: <Clock         className="size-4" />, description: "Across all active syncs" },
 ]
+
+// ---------------------------------------------------------------------------
+// Page data — Action Pipeline KPIs
+// ---------------------------------------------------------------------------
+
+const actionStats = [
+  { label: "Active Actions",         value: "24",   icon: <Zap          className="size-4" />, description: "Across 6 platforms" },
+  { label: "Execution Success (24h)", value: "96%",  icon: <CheckCircle2 className="size-4" />, trend: { value: 1,  label: "vs last week" } },
+  { label: "Pending Approvals",       value: "3",    icon: <Clock        className="size-4" />, description: "2 budget, 1 creative" },
+  { label: "Avg Execution Latency",   value: "1.2s", icon: <Activity     className="size-4" />, description: "Across all connectors" },
+]
+
+// ---------------------------------------------------------------------------
+// Integration cards
+// ---------------------------------------------------------------------------
 
 interface Integration {
   id: string; name: string; category: string
@@ -283,6 +362,43 @@ const statusIcon: Record<string, React.ReactNode> = {
 const statusLabel: Record<string, string> = {
   healthy: "Healthy", warning: "Degraded", error: "Error",
 }
+
+// ---------------------------------------------------------------------------
+// Recent Executions
+// ---------------------------------------------------------------------------
+
+interface Execution {
+  id: string
+  platform: string
+  action: string
+  triggeredBy: string
+  time: string
+  status: "Success" | "Pending" | "Failed"
+  platformColor: string
+}
+
+const executions: Execution[] = [
+  { id: "1", platform: "Google Ads",   action: "Budget +12% on \"NFL Season Search\"",      triggeredBy: "Optimize",    time: "2 min ago",  status: "Success", platformColor: "bg-blue-500"   },
+  { id: "2", platform: "Meta Ads",     action: "Creative rotation queued — 3 variants",     triggeredBy: "Optimize",    time: "14 min ago", status: "Pending", platformColor: "bg-indigo-500" },
+  { id: "3", platform: "Marketo",      action: "Audience segment push — 2,847 contacts",    triggeredBy: "Orchestrate", time: "1 hr ago",   status: "Success", platformColor: "bg-purple-600" },
+  { id: "4", platform: "LinkedIn Ads", action: "Bid floor adjusted to $4.20",               triggeredBy: "Optimize",    time: "3 hr ago",   status: "Success", platformColor: "bg-blue-700"   },
+  { id: "5", platform: "Google Ads",   action: "Negative keyword list updated — 34 terms",  triggeredBy: "Optimize",    time: "5 hr ago",   status: "Success", platformColor: "bg-blue-500"   },
+]
+
+const executionStatusStyles: Record<string, string> = {
+  Success: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800",
+  Pending: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800",
+  Failed:  "bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800",
+}
+
+const moduleTagStyles: Record<string, string> = {
+  Optimize:    "bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-950 dark:text-orange-300 dark:border-orange-800",
+  Orchestrate: "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950 dark:text-cyan-300 dark:border-cyan-800",
+}
+
+// ---------------------------------------------------------------------------
+// Sync errors
+// ---------------------------------------------------------------------------
 
 interface SyncError {
   id: string; source: string; errorType: string
@@ -313,7 +429,7 @@ export default function ConnectPage() {
     <Container className="py-8 space-y-8">
       <PageHeader
         title="Connect"
-        description="Data integration hub — connected sources, knowledge graph, and pipeline health."
+        description="Bidirectional integration hub — data pipelines in, action execution out, health monitoring across both."
         actions={<Button>Add Integration</Button>}
       />
 
@@ -326,13 +442,29 @@ export default function ConnectPage() {
               Data Health Signal
             </span>
             <p className="mt-0.5 text-sm leading-relaxed text-green-900 dark:text-green-200">
-              14 sources are connected with overall sync health at 92%. 3 sync failures occurred in the last 24 hours — Marketo authentication expired, blocking campaign data from flowing into Intelligence and Optimize. Average data freshness is 18 minutes across healthy connectors. Resolve the Marketo token to restore full pipeline visibility.
+              14 sources are connected with overall sync health at 92% — 3 sync failures in the last 24 hours, including Marketo authentication blocking campaign data from Intelligence and Optimize. On the action side, 24 executions completed with a 96% success rate, and 3 actions are pending human approval (2 budget adjustments, 1 creative rotation). Resolve the Marketo token to restore full pipeline visibility and unblock queued audience segment pushes.
             </p>
           </div>
         </div>
       </div>
 
-      <StatsGrid stats={stats} columns={4} />
+      {/* Data Pipeline KPIs */}
+      <div className="space-y-3">
+        <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          <Database className="size-3.5" />
+          Data Pipelines
+        </p>
+        <StatsGrid stats={dataStats} columns={4} />
+      </div>
+
+      {/* Action Pipeline KPIs */}
+      <div className="space-y-3">
+        <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          <Zap className="size-3.5" />
+          Action Pipelines
+        </p>
+        <StatsGrid stats={actionStats} columns={4} />
+      </div>
 
       {/* Knowledge Graph */}
       <Card>
@@ -341,7 +473,7 @@ export default function ConnectPage() {
             <div>
               <CardTitle>Knowledge Graph</CardTitle>
               <CardDescription>
-                Live data flows from connected sources through GlueOS into downstream intelligence modules
+                Bidirectional flows — data streams in from connected sources, actions execute out to platforms. Orange dashed lines show action flows.
               </CardDescription>
             </div>
             <Button variant="ghost" size="sm" className="shrink-0">View Schema</Button>
@@ -349,6 +481,48 @@ export default function ConnectPage() {
         </CardHeader>
         <CardContent>
           <KnowledgeGraph />
+        </CardContent>
+      </Card>
+
+      {/* Recent Executions */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <CardTitle>Recent Executions</CardTitle>
+              <CardDescription>Actions GlueOS modules have executed on connected platforms</CardDescription>
+            </div>
+            <Button variant="ghost" size="sm" className="shrink-0">View Execution Log</Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-1">
+            {executions.map((e, i) => (
+              <div key={e.id}>
+                <div className="flex items-center justify-between gap-4 py-3 px-2 -mx-2 rounded-md hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className={`size-7 rounded-md ${e.platformColor} flex items-center justify-center shrink-0`}>
+                      <Zap className="size-3.5 text-white" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="text-sm font-medium">{e.platform}</p>
+                        <Badge variant="outline" className={`text-[10px] shrink-0 ${moduleTagStyles[e.triggeredBy] ?? ""}`}>
+                          {e.triggeredBy}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground hidden sm:inline">{e.time}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground truncate mt-0.5">{e.action}</p>
+                    </div>
+                  </div>
+                  <Badge variant="outline" className={`shrink-0 ${executionStatusStyles[e.status]}`}>
+                    {e.status}
+                  </Badge>
+                </div>
+                {i < executions.length - 1 && <Separator />}
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
 

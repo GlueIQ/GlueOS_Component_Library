@@ -147,10 +147,10 @@ const modules: ModuleCard[] = [
   },
   {
     name: "Connect",
-    description: "Data integration hub connecting third-party platforms, APIs, and data sources.",
+    description: "Integration hub for connected platforms — data pipelines in, action execution out, health monitoring across both.",
     icon: Link,
     href: "/connect",
-    signal: { text: "Marketo sync failed — auth token expired", type: "critical" },
+    signal: { text: "3 actions pending approval — 2 budget, 1 creative", type: "caution" },
   },
   {
     name: "Shield",
