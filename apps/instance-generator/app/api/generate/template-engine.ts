@@ -87,7 +87,7 @@ export async function generateProject(
     }
     const layoutPath = path.join(
       projectDir,
-      "apps/web/app/layout.tsx",
+      "apps/launchpad/app/layout.tsx",
     )
     if (fs.existsSync(layoutPath)) {
       let layout = fs.readFileSync(layoutPath, "utf-8")
