@@ -1,114 +1,94 @@
 # Current Session Context
-**Last Updated:** February 26, 2026
-**Session Status:** Active — App Shell layout complete
+**Last Updated:** March 5, 2026
+**Session Status:** Deployment pipeline complete
 
 ---
 
-## What Just Happened
+## What Just Happened (March 5, 2026)
 
-### App Shell Layout — Complete
-The foundational App Shell layout has been built as a reusable library component and added to Storybook under `4-Layouts`.
+### Deployment Pipeline — Fully Operational
+All three deployment targets are now configured and working:
 
-**Key deliverables:**
-- ✅ App Shell layout component with props-based API (`packages/ui/src/layouts/app-shell/`)
-- ✅ GlueIQLogo / GlueIQIcon — theme-aware inline SVG components (trimmed viewBox, no next/image dependency)
-- ✅ Module switcher with all 11 GlueOS modules (defaults to Horizon)
-- ✅ Active module shown in breadcrumb via shared React Context
-- ✅ Storybook story: `4-Layouts/App Shell` (Default, WithBreadcrumbs, MinimalNav)
-- ✅ Web app refactored to consume AppShell from library
-- ✅ "Templates" renamed to "Layouts" throughout (4th Storybook section)
+| Target | Platform | Status | Auto-deploy |
+|--------|----------|--------|-------------|
+| `instance-generator` | Vercel | READY (production) | Push to `main` |
+| `ui-sandbox` | Vercel | READY (production) | Push to `main` |
+| Storybook | Chromatic | Configured (PR #19) | Push/PR to `main` touching `packages/ui/**` |
 
-### App Shell Components (in library)
+### Build Fixes Resolved
+- **TS2322 errors**: `NavMain` label prop changed from required to optional; conditional spread replaced with direct prop passing
+- **ERR_PNPM_OUTDATED_LOCKFILE**: Regenerated `pnpm-lock.yaml` to include `packages/auth` workspace
+- **Vercel production**: `glue-os-component-library-web` now deploying successfully
 
-| Component | File | Purpose |
-|-----------|------|---------|
-| `AppShell` | `app-shell.tsx` | Main orchestrating layout — accepts logo, nav, user, breadcrumbs as props |
-| `GlueIQLogo` | `glueiq-logo.tsx` | Full wordmark, theme-aware inline SVG (trimmed viewBox) |
-| `GlueIQIcon` | `glueiq-logo.tsx` | Pink flame icon for collapsed sidebar |
-| `AppSwitcher` | `app-switcher.tsx` | Module dropdown (11 modules), fixed width `w-44` |
-| `NavMain` | `nav-main.tsx` | Collapsible sidebar nav with sub-items |
-| `NavDocuments` | `nav-documents.tsx` | Flat sidebar nav list |
-| `NavSecondary` | `nav-secondary.tsx` | Bottom-pinned secondary nav |
-| `NavUser` | `nav-user.tsx` | User profile dropdown with avatar |
-| `PageBreadcrumb` | `page-breadcrumb.tsx` | Breadcrumb with active module name |
-| `ThemeToggle` | `theme-toggle.tsx` | Light/dark toggle (uses next-themes) |
-| `ActiveModuleProvider` | `active-module.tsx` | Shared module state context |
+### New Infrastructure
+- **@repo/auth package** (`packages/auth/`): Clerk-based auth with middleware, guards, hooks, provider, and org switcher
+- **App module template** (`templates/app/`): Full Next.js scaffold with routes, sign-in, and `tooling/create-app.sh` generator
+- **Chromatic CI** (`.github/workflows/chromatic.yml`): GitHub Action publishes Storybook on changes to `packages/ui/**`
+- **ui-sandbox Vercel project**: Deployed at `ui-sandbox-glue-iq.vercel.app`
 
-### GlueOS Modules (in AppSwitcher)
-
-| Module | Icon | Description |
-|--------|------|-------------|
-| Lumen | Gem | UI Component Library |
-| Horizon | Compass | Strategic Planning |
-| Immersion | Eye | Brand Experience |
-| Intelligence | TrendingUp | Analytics & Insights |
-| Zoltar | BrainCircuit | AI Predictions |
-| Studio | Palette | Design Tools |
-| Vault | Archive | Asset Management |
-| Orchestrate | Megaphone | Campaign Management |
-| Optimize | SlidersHorizontal | Performance Optimization |
-| Connect | Link | Integration Hub |
-| Shield | ShieldCheck | AI Governance |
+### Component Upgrades
+- Button, input, separator, sheet, sidebar, skeleton, status-badge refreshed with data-slot attributes
+- Sidebar refactored to latest shadcn/ui patterns with mobile support (`use-mobile` hook)
+- New status utility module and foundation stories (1.6-Status)
+- SVG logo/icon assets refreshed
 
 ---
 
-## Architecture Decisions
+## Deployment Configuration
 
-### Props-Based Layout API
-The `AppShell` component accepts all configuration as props (no hardcoded nav items, logo, etc.). This makes it reusable across different client configurations — critical for the generator use case.
+### Vercel Projects (GlueIQ team)
 
-### No next/image in Library
-Logo components use inline SVG instead of `next/image`. The web app passes `<GlueIQLogo />` and `<GlueIQIcon />` as React nodes to the `logo`/`logoIcon` props.
+**instance-generator** (existing)
+- Project: `glue-os-component-library-web` (`prj_lr9TrUvZielxSdx8imiF3VY5OXiz`)
+- Root: `apps/instance-generator`
+- URL: `glue-os-component-library-web.vercel.app`
 
-### Breadcrumb Resolution
-The library's `PageBreadcrumb` accepts `breadcrumbs` as props (no `usePathname()` dependency). The web app resolves `pathname → breadcrumbs` and passes them in.
+**ui-sandbox** (new)
+- Project: `ui-sandbox` (`prj_4j3I8gh6H07liPRKAWfYgxhZkosP`)
+- Root: `apps/ui-sandbox`
+- Build: `cd ../.. && pnpm run build --filter=ui-sandbox`
+- URL: `ui-sandbox-glue-iq.vercel.app`
 
----
-
-## Key Files
-
-### Layout Components
-- `packages/ui/src/layouts/app-shell/` — All app shell components
-- `packages/ui/src/layouts/app-shell/index.ts` — Barrel exports
-- `packages/ui/src/stories/4-Layouts/AppShell.stories.tsx` — Storybook story
-
-### Web App (consumer)
-- `apps/web/app/(app)/layout.tsx` — Imports AppShell from library
-- `apps/web/lib/breadcrumbs.ts` — Pathname → breadcrumb resolution
-
-### Configuration
-- `packages/ui/package.json` — `"./layouts/app-shell"` export
-- `packages/ui/src/index.ts` — `export * from "./layouts/app-shell"`
-- `packages/ui/.storybook/preview.tsx` — `'4-Layouts'` in storySort order
-
-### Reference Docs
-- `reference/glueos-ui-kit-refinement-plan.md` — Updated: "Templates" → "Layouts", App Shell documented
-- `reference/QA-PHASE-COMPLETION-REPORT.md` — Previous QA work summary
-- `reference/claude:team-brief.md` — Overall project context
+### Chromatic
+- Project token stored as `CHROMATIC_PROJECT_TOKEN` GitHub secret
+- Workflow: `.github/workflows/chromatic.yml`
+- Triggers on push/PR to `main` when `packages/ui/**` changes
 
 ---
 
-## Pre-existing TypeScript Errors (not from layout work)
+## Architecture
 
-These errors exist in the UI package and are unrelated to the app shell:
-- `chart.tsx` — Recharts type issues (payload, label properties)
-- `chart-venn.tsx` — Possibly undefined values
-- `chart-composed-interactive.tsx` — Missing payload/scopeId props
-- `index.ts` — Duplicate `TimeRangeOption` export
+### Monorepo Structure
+```
+apps/
+  instance-generator/   → Vercel (production)
+  ui-sandbox/           → Vercel (production)
+packages/
+  ui/                   → Component library + Storybook → Chromatic
+  auth/                 → Clerk auth package (new)
+  eslint-config/
+  typescript-config/
+templates/
+  app/                  → Module scaffold template (new)
+  docker/
+tooling/
+  create-app.sh         → App generator script (new)
+```
+
+### Apps in Monorepo
+| App | Port (dev) | Purpose |
+|-----|-----------|---------|
+| `instance-generator` | 3000 | Production generator app |
+| `ui-sandbox` | 3001 | GlueOS module demo/sandbox |
+| Storybook | 6006 | Component library docs |
 
 ---
 
-## Git Status
-
-Current changes include:
-- **New:** App shell layout components, GlueIQLogo, Storybook story, chart patterns, new components
-- **Modified:** Web app layout, sidebar nav, various component fixes from QA
-- **Deleted:** Old reference docs, old Storybook preview
-
-**Recommendation:** Ready for commit of app shell + layouts work.
+## Open PRs
+- **PR #19**: Chromatic workflow, component upgrades, and build fixes (`feature/patterns-layouts-buildout` → `main`)
 
 ---
 
 ## Blocking Issues: None
 
-All critical work is complete. Ready for next steps.
+All deployment targets operational. PR #19 pending merge to activate Chromatic.
