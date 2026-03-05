@@ -89,10 +89,10 @@ export const IconButtons: Story = {
       <Button size="icon">
         <Plus className="w-4 h-4" />
       </Button>
-      <Button size="icon-sm">
+      <Button size="sm" className="size-7 px-0">
         <Plus className="w-3 h-3" />
       </Button>
-      <Button size="icon-lg">
+      <Button size="lg" className="size-11 px-0">
         <Plus className="w-5 h-5" />
       </Button>
     </div>

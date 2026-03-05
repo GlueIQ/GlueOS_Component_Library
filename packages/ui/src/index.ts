@@ -64,6 +64,9 @@ export { cn } from "./lib/utils"
 // Color system
 export * from "./lib/colors"
 
+// Semantic status tokens
+export * from "./lib/status"
+
 // Chart utilities
 export * from "./lib/chart-utils"
 

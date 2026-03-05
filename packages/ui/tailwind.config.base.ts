@@ -68,6 +68,22 @@ export const tailwindConfigBase: Partial<Config> = {
           4: "var(--chart-4)",
           5: "var(--chart-5)",
         },
+        "status-info": {
+          DEFAULT: "var(--status-info)",
+          foreground: "var(--status-info-foreground)",
+        },
+        "status-success": {
+          DEFAULT: "var(--status-success)",
+          foreground: "var(--status-success-foreground)",
+        },
+        "status-warning": {
+          DEFAULT: "var(--status-warning)",
+          foreground: "var(--status-warning-foreground)",
+        },
+        "status-error": {
+          DEFAULT: "var(--status-error)",
+          foreground: "var(--status-error-foreground)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
