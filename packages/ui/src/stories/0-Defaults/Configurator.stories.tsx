@@ -14,7 +14,8 @@ import { ChartAreaInteractive } from '../../patterns/data-visualization/chart-ar
 import { ChartPalettePicker } from '../../components/ui/chart-palette-picker'
 import { NeutralPalettePicker } from '../../components/ui/neutral-palette-picker'
 import { type ChromaticPaletteName } from '../../lib/colors/chart-palettes'
-import { type NeutralPaletteName } from '../../lib/colors/palettes'
+import { neutralPalettes, type NeutralPaletteName } from '../../lib/colors/palettes'
+import { hexToOklch } from '../../lib/colors/generate-theme'
 
 // Neutral palette options
 const NEUTRAL_PALETTES = ['slate', 'gray', 'zinc', 'neutral', 'stone'] as const
@@ -132,11 +133,30 @@ const GeneratorConfigurator = () => {
   useEffect(() => {
     const root = document.documentElement
 
-    // Convert hex to oklch (simplified - just update primary for now)
-    root.style.setProperty('--color-brand-primary', hexToHSL(config.brandPrimary))
+    // Apply neutral palette (Layer 1)
+    const palette = neutralPalettes[config.neutralPalette as NeutralPaletteName]
+    if (palette) {
+      Object.entries(palette).forEach(([shade, value]) => {
+        root.style.setProperty(`--color-neutral-${shade}`, value)
+      })
+    }
+
+    root.style.setProperty('--color-brand-primary', hexToOklch(config.brandPrimary))
     root.style.setProperty('--font-sans', config.headingFont)
     root.style.setProperty('--radius', `${config.radius}rem`)
     root.style.fontFamily = config.bodyFont
+
+    return () => {
+      if (palette) {
+        Object.keys(palette).forEach((shade) => {
+          root.style.removeProperty(`--color-neutral-${shade}`)
+        })
+      }
+      root.style.removeProperty('--color-brand-primary')
+      root.style.removeProperty('--font-sans')
+      root.style.removeProperty('--radius')
+      root.style.fontFamily = ''
+    }
   }, [config])
 
   const updateConfig = (key: string, value: string | number) => {
@@ -246,7 +266,7 @@ const GeneratorConfigurator = () => {
               </div>
               <Slider
                 value={[config.radius]}
-                onValueChange={([value]) => updateConfig('radius', value)}
+                onValueChange={([value]) => updateConfig('radius', value ?? 0)}
                 min={0}
                 max={1}
                 step={0.125}

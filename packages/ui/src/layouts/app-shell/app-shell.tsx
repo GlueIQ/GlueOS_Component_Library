@@ -12,8 +12,10 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarRail,
   SidebarTrigger,
 } from "../../components/ui/sidebar"
+import { AppBranding } from "../../components/ui/app-branding"
 import { Separator } from "../../components/ui/separator"
 import { ActiveModuleProvider } from "./active-module"
 import { AppSwitcher } from "./app-switcher"
@@ -57,10 +59,12 @@ export interface AppShellProps {
   logoIcon?: React.ReactNode
   /** Link target for the logo */
   logoHref?: string
+  /** Show the module switcher in the sidebar header (default: true) */
+  showModuleSwitcher?: boolean
   /** Document-style flat navigation sections */
   docSections?: { label: string; items: AppShellDocItem[] }[]
   /** Collapsible main navigation sections */
-  navSections?: { label: string; items: AppShellNavItem[] }[]
+  navSections?: { label?: string; items: AppShellNavItem[] }[]
   /** Secondary navigation items (pinned to bottom of sidebar content) */
   secondaryItems?: AppShellSecondaryItem[]
   /** User info for the sidebar footer */
@@ -75,6 +79,7 @@ export function AppShell({
   logo,
   logoIcon,
   logoHref = "/",
+  showModuleSwitcher = true,
   docSections = [],
   navSections = [],
   secondaryItems = [],
@@ -89,23 +94,10 @@ export function AppShell({
           <SidebarHeader>
             <SidebarMenu>
               <SidebarMenuItem>
-                <a
-                  href={logoHref}
-                  className="flex items-center px-2 py-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
-                >
-                  {logoIcon && (
-                    <div className="hidden min-h-6 min-w-6 shrink-0 group-data-[collapsible=icon]:block">
-                      {logoIcon}
-                    </div>
-                  )}
-                  {logo && (
-                    <div className="group-data-[collapsible=icon]:hidden">
-                      {logo}
-                    </div>
-                  )}
-                </a>
+                <AppBranding icon={logoIcon} name={logo} href={logoHref} />
               </SidebarMenuItem>
             </SidebarMenu>
+            {showModuleSwitcher && <AppSwitcher />}
           </SidebarHeader>
           <SidebarContent>
             {docSections.map((section) => (
@@ -115,9 +107,9 @@ export function AppShell({
                 label={section.label}
               />
             ))}
-            {navSections.map((section) => (
+            {navSections.map((section, i) => (
               <NavMain
-                key={section.label}
+                key={section.label ?? i}
                 items={section.items}
                 label={section.label}
               />
@@ -131,6 +123,7 @@ export function AppShell({
               <NavUser user={user} />
             </SidebarFooter>
           )}
+          <SidebarRail />
         </Sidebar>
         <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
@@ -143,7 +136,6 @@ export function AppShell({
               <PageBreadcrumb breadcrumbs={breadcrumbs} />
               <div className="ml-auto flex items-center gap-1">
                 <ThemeToggle />
-                <AppSwitcher />
               </div>
             </div>
           </header>

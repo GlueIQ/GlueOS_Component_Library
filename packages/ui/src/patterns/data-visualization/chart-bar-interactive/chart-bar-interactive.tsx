@@ -222,7 +222,6 @@ export function ChartBarInteractive({
           ))
         )}
         {showLegend && !showSeriesToggle && (
-          // @ts-expect-error recharts v3 passes payload via render
           <ChartLegend content={<ChartLegendContent />} />
         )}
       </BarChart>

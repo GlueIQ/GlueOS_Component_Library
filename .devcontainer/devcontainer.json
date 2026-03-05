@@ -1,7 +1,7 @@
 {
   "name": "GlueOS Development",
   "dockerComposeFile": "../docker-compose.yml",
-  "service": "web",
+  "service": "instance-generator",
   "workspaceFolder": "/app",
 
   "customizations": {
@@ -26,18 +26,14 @@
     }
   },
 
-  "forwardPorts": [3000, 3001, 3002, 6006],
+  "forwardPorts": [3000, 3001, 6006],
   "portsAttributes": {
     "3000": {
-      "label": "Web App",
+      "label": "Instance Generator",
       "onAutoForward": "notify"
     },
     "3001": {
-      "label": "Example Project",
-      "onAutoForward": "notify"
-    },
-    "3002": {
-      "label": "Project Tracker",
+      "label": "UI Sandbox",
       "onAutoForward": "notify"
     },
     "6006": {

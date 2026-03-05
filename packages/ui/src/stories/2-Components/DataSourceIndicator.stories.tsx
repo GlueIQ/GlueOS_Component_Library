@@ -49,6 +49,7 @@ export const WithFields: Story = {
 }
 
 export const WithCustomStatus: Story = {
+  args: { source: 'Production DB' },
   render: () => (
     <div className="flex gap-8">
       <DataSourceIndicator
@@ -72,6 +73,7 @@ export const WithCustomStatus: Story = {
 }
 
 export const WithCustomIcon: Story = {
+  args: { source: 'PostgreSQL' },
   render: () => (
     <div className="flex gap-8">
       <DataSourceIndicator icon={<Database className="h-4 w-4" />} source="PostgreSQL" />
@@ -107,6 +109,7 @@ export const APIExample: Story = {
 }
 
 export const InContextDashboard: Story = {
+  args: { source: 'Airtable: Forecasts' },
   render: () => (
     <Card className="w-96">
       <CardHeader>
@@ -149,6 +152,7 @@ export const InContextDashboard: Story = {
 }
 
 export const MultipleSourcesExample: Story = {
+  args: { source: 'Airtable: Projects' },
   render: () => (
     <div className="space-y-4 w-96">
       <Card>

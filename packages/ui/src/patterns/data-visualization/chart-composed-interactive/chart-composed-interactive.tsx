@@ -199,7 +199,7 @@ export function ChartComposedInteractive({
             />
           }
         />
-        <ChartLegend content={<ChartLegendContent />} />
+        <ChartLegend content={<ChartLegendContent payload={[]} />} />
 
         {showReferenceLine && <ReferenceLine y={0} stroke="var(--muted-foreground)" opacity={0.3} />}
 
@@ -241,7 +241,7 @@ export function ChartComposedInteractive({
           {description && <CardDescription>{description}</CardDescription>}
         </CardHeader>
         <CardContent>
-          {palette && <ChartPaletteStyle palette={palette} />}
+          {palette && <ChartPaletteStyle palette={palette} scopeId="composed-chart" />}
           {content}
         </CardContent>
       </Card>
@@ -250,7 +250,7 @@ export function ChartComposedInteractive({
 
   return (
     <>
-      {palette && <ChartPaletteStyle palette={palette} />}
+      {palette && <ChartPaletteStyle palette={palette} scopeId="composed-chart" />}
       {content}
     </>
   )

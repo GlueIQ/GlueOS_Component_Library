@@ -2,6 +2,8 @@ import type { Preview } from '@storybook/react'
 import { withThemeByClassName } from '@storybook/addon-themes'
 import { useEffect } from 'react'
 import '../src/globals.css'
+import { neutralPalettes, type NeutralPaletteName } from '../src/lib/colors/palettes'
+import { hexToOklch } from '../src/lib/colors/generate-theme'
 
 // Helper to get saved themes from localStorage
 function getSavedThemes() {
@@ -28,13 +30,24 @@ const withSavedTheme = (Story: any, context: any) => {
     // Apply theme to root element
     const root = document.documentElement
 
-    // Apply colors (convert hex to HSL)
-    root.style.setProperty('--color-brand-primary', hexToHSL(theme.brandPrimary))
+    // Apply neutral palette (Layer 1)
+    const palette = neutralPalettes[theme.neutralPalette as NeutralPaletteName]
+    if (palette) {
+      Object.entries(palette).forEach(([shade, value]) => {
+        root.style.setProperty(`--color-neutral-${shade}`, value)
+      })
+    }
+
+    root.style.setProperty('--color-brand-primary', hexToOklch(theme.brandPrimary))
     root.style.setProperty('--radius', `${theme.radius}rem`)
     root.style.fontFamily = theme.bodyFont
 
     return () => {
-      // Reset on unmount
+      if (palette) {
+        Object.keys(palette).forEach((shade) => {
+          root.style.removeProperty(`--color-neutral-${shade}`)
+        })
+      }
       root.style.removeProperty('--color-brand-primary')
       root.style.removeProperty('--radius')
       root.style.fontFamily = ''
@@ -42,39 +55,6 @@ const withSavedTheme = (Story: any, context: any) => {
   }, [selectedTheme])
 
   return <Story />
-}
-
-// Utility: Convert hex to HSL (same as in Configurator)
-function hexToHSL(hex: string): string {
-  hex = hex.replace('#', '')
-  const r = parseInt(hex.substring(0, 2), 16) / 255
-  const g = parseInt(hex.substring(2, 4), 16) / 255
-  const b = parseInt(hex.substring(4, 6), 16) / 255
-
-  const max = Math.max(r, g, b)
-  const min = Math.min(r, g, b)
-  let h = 0
-  let s = 0
-  const l = (max + min) / 2
-
-  if (max !== min) {
-    const d = max - min
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-
-    switch (max) {
-      case r:
-        h = ((g - b) / d + (g < b ? 6 : 0)) / 6
-        break
-      case g:
-        h = ((b - r) / d + 2) / 6
-        break
-      case b:
-        h = ((r - g) / d + 4) / 6
-        break
-    }
-  }
-
-  return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`
 }
 
 const preview: Preview = {

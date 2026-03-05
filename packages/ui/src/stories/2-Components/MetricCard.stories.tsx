@@ -36,6 +36,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
+  args: { title: 'Total Revenue' },
   render: () => (
     <MetricCard title="Total Revenue" className="max-w-md">
       <Metric icon={<DollarSign className="h-5 w-5" />} value="$124,500" label="This Month" />
@@ -44,6 +45,7 @@ export const Default: Story = {
 }
 
 export const WithDescription: Story = {
+  args: { title: 'Active Users' },
   render: () => (
     <MetricCard title="Active Users" description="Last 30 days" className="max-w-md">
       <Metric icon={<Users className="h-5 w-5" />} value="2,543" label="Active Users" />
@@ -52,6 +54,7 @@ export const WithDescription: Story = {
 }
 
 export const WithBreakdown: Story = {
+  args: { title: 'Team Headcount' },
   render: () => (
     <MetricCard title="Team Headcount" className="max-w-md">
       <Metric icon={<Users className="h-5 w-5" />} value={48} label="Total Headcount" />
@@ -65,6 +68,7 @@ export const WithBreakdown: Story = {
 }
 
 export const WithFooter: Story = {
+  args: { title: 'Service Line Capacity' },
   render: () => (
     <MetricCard title="Service Line Capacity" className="max-w-md">
       <Metric icon={<Users className="h-5 w-5" />} value={48} label="Total Headcount" />
@@ -82,6 +86,7 @@ export const WithFooter: Story = {
 }
 
 export const ColorVariants: Story = {
+  args: { title: 'Revenue' },
   render: () => (
     <div className="grid grid-cols-2 gap-4 max-w-3xl">
       <MetricCard title="Revenue" variant="default">
@@ -104,6 +109,7 @@ export const ColorVariants: Story = {
 }
 
 export const ThreeColumnGrid: Story = {
+  args: { title: 'Project Metrics' },
   render: () => (
     <MetricCard title="Project Metrics" description="Current quarter" className="max-w-2xl">
       <Metric icon={<Target className="h-5 w-5" />} value={156} label="Total Projects" />
@@ -118,6 +124,7 @@ export const ThreeColumnGrid: Story = {
 }
 
 export const MultipleMetrics: Story = {
+  args: { title: 'Department Overview' },
   render: () => (
     <MetricCard title="Department Overview" className="max-w-md">
       <Metric icon={<Users className="h-5 w-5" />} value={48} label="Team Members" />
@@ -131,6 +138,7 @@ export const MultipleMetrics: Story = {
 }
 
 export const CompactLayout: Story = {
+  args: { title: 'Sales' },
   render: () => (
     <div className="grid grid-cols-3 gap-4">
       <MetricCard title="Sales" variant="primary">
@@ -149,6 +157,7 @@ export const CompactLayout: Story = {
 }
 
 export const DashboardExample: Story = {
+  args: { title: 'Revenue' },
   render: () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <MetricCard title="Revenue" variant="primary">

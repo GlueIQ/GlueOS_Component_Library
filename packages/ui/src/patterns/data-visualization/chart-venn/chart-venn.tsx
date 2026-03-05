@@ -106,7 +106,8 @@ export function ChartVenn({
 
   // Two-set Venn diagram
   if (sets.length === 2) {
-    const [setA, setB] = setsWithColors
+    const setA = setsWithColors[0]!
+    const setB = setsWithColors[1]!
     const shared = getOverlapCount([setA.id, setB.id])
 
     const sizeA = total > 0 ? (setA.uniqueCount / total) * 100 : 50
@@ -137,7 +138,7 @@ export function ChartVenn({
                   marginRight: -40,
                   borderColor: setA.color,
                   backgroundColor: `${setA.color}15`,
-                  ringColor: setA.highlight ? setA.color : undefined,
+                  ...(setA.highlight ? { "--tw-ring-color": setA.color } as React.CSSProperties : {}),
                 }}
               >
                 <div className="text-center z-10">
@@ -218,7 +219,9 @@ export function ChartVenn({
 
   // Three-set Venn diagram (simplified triangular layout)
   if (sets.length === 3) {
-    const [setA, setB, setC] = setsWithColors
+    const setA = setsWithColors[0]!
+    const setB = setsWithColors[1]!
+    const setC = setsWithColors[2]!
     const sharedAB = getOverlapCount([setA.id, setB.id])
     const sharedBC = getOverlapCount([setB.id, setC.id])
     const sharedAC = getOverlapCount([setA.id, setC.id])

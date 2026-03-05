@@ -46,11 +46,11 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:!gap-0 group-data-[collapsible=icon]:!p-0.5"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="size-7 shrink-0 rounded-md">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">
+                <AvatarFallback className="rounded-lg bg-muted-foreground text-white">
                   {user.name
                     .split(" ")
                     .map((n) => n[0])

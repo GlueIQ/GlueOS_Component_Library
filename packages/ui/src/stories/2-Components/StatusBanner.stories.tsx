@@ -107,6 +107,7 @@ export const WithProgress: Story = {
 }
 
 export const AnalysisInProgress: Story = {
+  args: { title: 'AI Analysis in Progress' },
   render: () => (
     <StatusBanner
       variant="info"
@@ -128,6 +129,7 @@ export const AnalysisInProgress: Story = {
 }
 
 export const AnalysisComplete: Story = {
+  args: { title: 'Analysis Complete' },
   render: () => (
     <StatusBanner
       variant="success"
@@ -139,6 +141,7 @@ export const AnalysisComplete: Story = {
 }
 
 export const ReadyForAnalysis: Story = {
+  args: { title: 'Ready for AI Analysis' },
   render: () => (
     <StatusBanner
       variant="warning"
@@ -156,6 +159,7 @@ export const ReadyForAnalysis: Story = {
 }
 
 export const PendingReview: Story = {
+  args: { title: 'Pending Review' },
   render: () => (
     <StatusBanner
       variant="warning"
@@ -168,6 +172,7 @@ export const PendingReview: Story = {
 }
 
 export const AllVariants: Story = {
+  args: { title: 'System Update Available' },
   render: () => (
     <div className="space-y-4">
       <StatusBanner
@@ -205,6 +210,7 @@ export const AllVariants: Story = {
 }
 
 export const WithCustomContent: Story = {
+  args: { title: 'Import in Progress' },
   render: () => (
     <StatusBanner
       variant="info"
@@ -232,6 +238,7 @@ export const WithCustomContent: Story = {
 }
 
 export const MinimalInfo: Story = {
+  args: { title: 'Quick tip: Use Cmd+K to open the command palette' },
   render: () => (
     <StatusBanner
       variant="info"
