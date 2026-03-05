@@ -200,6 +200,21 @@ export default function LedgerPage() {
         }
       />
 
+      {/* Financial Signal */}
+      <div className="rounded-lg border border-yellow-200 bg-yellow-50 px-4 py-3 dark:border-yellow-800 dark:bg-yellow-950/40">
+        <div className="flex items-start gap-3">
+          <TrendingUp className="mt-0.5 size-4 shrink-0 text-yellow-600 dark:text-yellow-400" />
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-wide text-yellow-600 dark:text-yellow-400">
+              Financial Signal
+            </span>
+            <p className="mt-0.5 text-sm leading-relaxed text-yellow-900 dark:text-yellow-200">
+              Revenue is tracking 8% below monthly target — the Performance Marketing service line is the primary drag, with profitability down 3 points vs. last month. Team utilization is at 87% and holding. Q1 forecast remains achievable if the two at-risk accounts are retained; a scenario plan is recommended before the monthly review.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <StatsGrid stats={stats} columns={4} />
 
       {/* Financial Trends Chart */}

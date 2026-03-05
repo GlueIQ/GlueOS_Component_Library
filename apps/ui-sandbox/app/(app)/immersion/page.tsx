@@ -178,6 +178,21 @@ export default function ImmersionPage() {
         }
       />
 
+      {/* Research Signal */}
+      <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 dark:border-emerald-800 dark:bg-emerald-950/40">
+        <div className="flex items-start gap-3">
+          <Eye className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+              Research Signal
+            </span>
+            <p className="mt-0.5 text-sm leading-relaxed text-emerald-900 dark:text-emerald-200">
+              4 high-intent query clusters were surfaced this week that are not yet covered by active campaigns — a direct opportunity for organic and paid content expansion. A competitor launched an AI content platform that may affect your positioning. Brand sentiment declined 8 points in social, with a negative press cycle currently active and being monitored.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <StatsGrid stats={stats} columns={4} />
 
       {/* Search */}

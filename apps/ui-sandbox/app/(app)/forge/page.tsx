@@ -11,6 +11,7 @@ import {
   Palette,
   Radio,
   FolderKanban,
+  Sparkles,
 } from "lucide-react"
 
 import { Container } from "@repo/ui/components/ui/container"
@@ -166,6 +167,21 @@ export default function ForgePage() {
           </Button>
         }
       />
+
+      {/* Brief Signal */}
+      <div className="rounded-lg border border-orange-200 bg-orange-50 px-4 py-3 dark:border-orange-800 dark:bg-orange-950/40">
+        <div className="flex items-start gap-3">
+          <Sparkles className="mt-0.5 size-4 shrink-0 text-orange-600 dark:text-orange-400" />
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-wide text-orange-600 dark:text-orange-400">
+              Brief Signal
+            </span>
+            <p className="mt-0.5 text-sm leading-relaxed text-orange-900 dark:text-orange-200">
+              3 briefs are awaiting your review — including the Product Apollo launch brief which is due today. 2 new briefs were submitted this week across Campaign and Creative types. Forge has generated 12 AI-assisted drafts this month, with an average review-to-approval time of 1.4 days.
+            </p>
+          </div>
+        </div>
+      </div>
 
       <StatsGrid stats={stats} columns={4} />
 
