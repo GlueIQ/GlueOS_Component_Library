@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Input } from "@repo/ui/components/ui/input"
 import { Label } from "@repo/ui/components/ui/label"
 
@@ -14,10 +14,17 @@ interface ColorInputProps {
 const HEX_REGEX = /^#[0-9A-Fa-f]{6}$/
 
 export function ColorInput({ label, value, onChange, id }: ColorInputProps) {
+  // Local state tracks raw text while typing; syncs from prop when picker changes
+  const [localValue, setLocalValue] = useState(value)
+
+  useEffect(() => {
+    setLocalValue(value)
+  }, [value])
+
   const handleTextChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const raw = e.target.value
-      // Allow typing — only propagate valid hex
+      setLocalValue(raw)
       if (HEX_REGEX.test(raw)) {
         onChange(raw)
       } else if (raw === "" || raw === "#") {
@@ -34,8 +41,6 @@ export function ColorInput({ label, value, onChange, id }: ColorInputProps) {
     [onChange]
   )
 
-  const displayValue = value || ""
-
   return (
     <div className="space-y-2">
       <Label htmlFor={id}>{label}</Label>
@@ -50,7 +55,7 @@ export function ColorInput({ label, value, onChange, id }: ColorInputProps) {
         />
         <Input
           id={id}
-          value={displayValue}
+          value={localValue}
           onChange={handleTextChange}
           placeholder="#000000"
           className="font-mono uppercase"
