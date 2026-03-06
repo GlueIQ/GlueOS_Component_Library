@@ -22,8 +22,8 @@
     "dev": "tsc --noEmit --watch"
   },
   "devDependencies": {
-    "@__SCOPE__/eslint-config": "*",
-    "@__SCOPE__/typescript-config": "*",
+    "@__SCOPE__/eslint-config": "workspace:*",
+    "@__SCOPE__/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",

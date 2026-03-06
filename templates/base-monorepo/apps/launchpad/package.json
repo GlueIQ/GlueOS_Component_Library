@@ -11,7 +11,7 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@__SCOPE__/ui": "*",
+    "@__SCOPE__/ui": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.577.0",
@@ -26,8 +26,8 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@__SCOPE__/eslint-config": "*",
-    "@__SCOPE__/typescript-config": "*",
+    "@__SCOPE__/eslint-config": "workspace:*",
+    "@__SCOPE__/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
